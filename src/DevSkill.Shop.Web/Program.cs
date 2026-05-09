@@ -1,11 +1,12 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DevSkill.Shop.Web;
-using DevSkill.Shop.Web.Data;
+using DevSkill.Shop.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using DevSkill.Shop.Infrastructure.Extensions;
+using System.Reflection;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
@@ -17,6 +18,8 @@ try
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    var migrationAssembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+
 
     #region Dependency Injection
 
@@ -45,8 +48,12 @@ try
 
     #endregion
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
+    #region DbContext Configuration
+
+    builder.Services.AddDbContext(connectionString, migrationAssembly);
+
+    #endregion
+
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
