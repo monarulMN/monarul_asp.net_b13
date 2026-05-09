@@ -1,4 +1,4 @@
-﻿namespace DevSkill.Shop.Domain
+﻿namespace DevSkill.Shop.Application
 {
     public class Class1
     {

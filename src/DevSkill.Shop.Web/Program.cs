@@ -5,6 +5,7 @@ using DevSkill.Shop.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using DevSkill.Shop.Infrastructure.Extensions;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
@@ -16,6 +17,12 @@ try
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+    #region Dependency Injection
+
+    builder.Services.AddInfrastructure();
+
+    #endregion
 
     #region Serilog Configuration
 
@@ -30,11 +37,11 @@ try
 
     #region Autofac Configuration
 
-    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    {
-        containerBuilder.RegisterModule(new WebModule(connectionString));
-    });
+    //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+    //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    //{
+    //    containerBuilder.RegisterModule(new WebModule(connectionString));
+    //});
 
     #endregion
 
