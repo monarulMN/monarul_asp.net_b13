@@ -19,4 +19,13 @@
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="9.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DevSkill.Shop.Application\DevSkill.Shop.Application.csproj" />
+    <ProjectReference Include="..\DevSkill.Shop.Infrastructure\DevSkill.Shop.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

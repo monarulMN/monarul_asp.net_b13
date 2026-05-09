@@ -9,6 +9,6 @@ namespace DevSkill.Shop.Domain.Interfaces
         where TKey : IComparable
     {
         void Add(TAggregateRoot entity);
-        void AddAsync(TAggregateRoot entity);
+        Task AddAsync(TAggregateRoot entity);
     }
 }

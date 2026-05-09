@@ -1,11 +1,12 @@
 ﻿using DevSkill.Shop.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DevSkill.Shop.Infrastructure.Data
 {
-    public class Repository<TAggregateRoot, TKey> : IRepository<TAggregateRoot, TKey>
+    public class Repository<TAggregateRoot, TKey> : IRepository<TAggregateRoot, TKey>, IDisposable
         where TAggregateRoot : class, IAggregateRoot<TKey>
         where TKey : IComparable
     {
@@ -24,7 +25,12 @@ namespace DevSkill.Shop.Infrastructure.Data
 
         public async Task AddAsync(TAggregateRoot entity)
         {
-            _dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
+        }
+
+        public void Dispose()
+        {
+            _dbContext.Dispose();
         }
     }
 }

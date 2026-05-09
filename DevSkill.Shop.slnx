@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="src/DevSkill.Shop.Application/DevSkill.Shop.Application.csproj" Id="8b2322df-3b0a-4316-9422-784e051b31b0" />
   <Project Path="src/DevSkill.Shop.Domain/DevSkill.Shop.Domain.csproj" Id="0b834b45-2caf-49d0-91d1-5f0de6395e0c" />
+  <Project Path="src/DevSkill.Shop.Infrastructure/DevSkill.Shop.Infrastructure.csproj" Id="09e1bc9b-f48c-4ad0-8553-92c1db6fac58" />
   <Project Path="src/DevSkill.Shop.Web/DevSkill.Shop.Web.csproj" Id="22536407-bbd4-4c6b-8abe-2a4643f3db23" />
 </Solution>
