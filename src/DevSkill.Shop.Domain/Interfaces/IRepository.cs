@@ -10,5 +10,8 @@ namespace DevSkill.Shop.Domain.Interfaces
     {
         void Add(TAggregateRoot entity);
         Task AddAsync(TAggregateRoot entity);
+        void Update(TAggregateRoot entity);        
+        void Delete(TAggregateRoot entity);
+        
     }
 }
