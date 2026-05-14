@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevSkill.Shop.Infrastructure.Data
 {
-    public class Repository<TAggregateRoot, TKey> : IRepository<TAggregateRoot, TKey>, IDisposable
+    public abstract class Repository<TAggregateRoot, TKey> : IRepository<TAggregateRoot, TKey>, IDisposable
         where TAggregateRoot : class, IAggregateRoot<TKey>
         where TKey : IComparable
     {
@@ -31,7 +31,10 @@ namespace DevSkill.Shop.Infrastructure.Data
         {
             _dbSet.Update(entity);
         }
-
+        public async Task UpdateAsync(TAggregateRoot entity)
+        {
+            await _dbContext.SaveChangesAsync();
+        }
         public void Delete(TAggregateRoot entity)
         {
             _dbSet.Remove(entity);
