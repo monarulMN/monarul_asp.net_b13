@@ -7,5 +7,6 @@ namespace DevSkill.Shop.Infrastructure.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
         public DbSet<Member> Members { get; set; }
+        public DbSet<Team> Teams { get; set; }
     }
 }

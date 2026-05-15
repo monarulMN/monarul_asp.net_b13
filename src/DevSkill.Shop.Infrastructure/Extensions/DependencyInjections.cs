@@ -14,6 +14,7 @@ namespace DevSkill.Shop.Infrastructure.Extensions
         {
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
 
             return services;
         }
