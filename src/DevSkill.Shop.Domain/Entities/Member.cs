@@ -5,10 +5,11 @@ using System.Text;
 
 namespace DevSkill.Shop.Domain.Entities
 {
-    public class Product : IAggregateRoot<Guid>
+    public class Member : IAggregateRoot<Guid>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevSkill.Shop.Application.Contracts
 {
-    public interface IProductRepository : IRepository<Product, Guid>
+    public interface IMemberRepository : IRepository<Member, Guid>
     {
     }
 }

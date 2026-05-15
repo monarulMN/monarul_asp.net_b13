@@ -40,11 +40,11 @@ try
 
     #region Autofac Configuration
 
-    //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    //{
-    //    containerBuilder.RegisterModule(new WebModule(connectionString));
-    //});
+    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    {
+        containerBuilder.RegisterModule(new WebModule(connectionString));
+    });
 
     #endregion
 

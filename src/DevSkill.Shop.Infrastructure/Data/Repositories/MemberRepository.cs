@@ -7,9 +7,9 @@ using System.Text;
 
 namespace DevSkill.Shop.Infrastructure.Data.Repositories
 {
-    public class ProductRepository : Repository<Product, Guid>, IProductRepository
+    public class MemberRepository : Repository<Member, Guid>, IMemberRepository
     {
-        public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public MemberRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
     }

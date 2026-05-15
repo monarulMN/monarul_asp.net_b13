@@ -7,6 +7,6 @@ namespace DevSkill.Shop.Application.Contracts
 {
     public interface IApplicationUnitOfWork : IUnitOfWork
     {
-        public IProductRepository ProductRepository { get; }
+        public IMemberRepository MemberRepository { get; }
     }
 }

@@ -7,12 +7,12 @@ namespace DevSkill.Shop.Infrastructure.Data
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public IProductRepository ProductRepository { get; private set; }
+        public IMemberRepository MemberRepository { get; private set; }
 
-        public ApplicationUnitOfWork(ApplicationDbContext dbContext, IProductRepository productRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext dbContext, IMemberRepository memberRepository)
             : base(dbContext)
         {
-            ProductRepository = productRepository;
+            MemberRepository = memberRepository;
         }
     }
 }

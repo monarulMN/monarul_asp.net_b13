@@ -13,7 +13,7 @@ namespace DevSkill.Shop.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
 
             return services;
         }
