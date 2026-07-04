@@ -1,8 +1,11 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Cortex.Mediator.DependencyInjection;
 using DevSkill.Shop.Infrastructure.Data;
 using DevSkill.Shop.Infrastructure.Extensions;
 using DevSkill.Shop.Web;
+using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -47,6 +50,25 @@ try
 
     #endregion
 
+    #region Cortex Mediator Configuration
+
+    builder.Services.AddCortexMediator(
+        new[] {typeof(Program)},
+        options => options.AddDefaultBehaviors()
+        );
+
+    #endregion
+
+    #region Mapster Configuration
+
+    //Custom Configuration for Mapster
+    var config = TypeAdapterConfig.GlobalSettings;
+    config.Scan(typeof(MapsterConfiguration).Assembly);
+    builder.Services.AddSingleton(config);
+    builder.Services.AddScoped<IMapper, ServiceMapper>();
+
+    #endregion
+
     #region DbContext Configuration
 
     builder.Services.AddDbContext(connectionString, migrationAssembly);
@@ -57,6 +79,7 @@ try
 
     builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApplicationDbContext>();
+
     builder.Services.AddControllersWithViews();
 
     var app = builder.Build();
@@ -79,6 +102,11 @@ try
     app.UseAuthorization();
 
     app.MapStaticAssets();
+
+    app.MapControllerRoute(
+        name: "area",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+        .WithStaticAssets();
 
     app.MapControllerRoute(
         name: "default",

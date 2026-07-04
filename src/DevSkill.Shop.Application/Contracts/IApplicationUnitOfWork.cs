@@ -8,5 +8,6 @@ namespace DevSkill.Shop.Application.Contracts
     public interface IApplicationUnitOfWork : IUnitOfWork
     {
         public ITeamMemberRepository TeamMemberRepository { get; }
+        public ICategoryRepository CategoryRepository { get; }
     }
 }

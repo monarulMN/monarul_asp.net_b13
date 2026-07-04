@@ -1,4 +1,6 @@
-﻿namespace DevSkill.Shop.Web.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DevSkill.Shop.Web.Models
 {
     public class TeamListModel
     {
