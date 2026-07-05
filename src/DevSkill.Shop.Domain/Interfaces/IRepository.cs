@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DevSkill.Shop.Domain.Interfaces
@@ -9,9 +10,21 @@ namespace DevSkill.Shop.Domain.Interfaces
         where TKey : IComparable
     {
         void Add(TAggregateRoot entity);
-        Task AddAsync(TAggregateRoot entity);
+        Task AddAsync(TAggregateRoot entity, CancellationToken cancellationToken);
+        void Edit(TAggregateRoot entityToUpdate);
+        Task EditAsync(TAggregateRoot entityToUpdate, CancellationToken cancellationToken);
+        IList<TAggregateRoot> GetAll();
+        Task<IList<TAggregateRoot>> GetAllAsync(CancellationToken cancellationToken);
+        TAggregateRoot GetById(TKey id);
+        Task<TAggregateRoot?> GetByIdAsync(TKey id, CancellationToken cancellationToken);
+        int GetCount(Expression<Func<TAggregateRoot, bool>>? filter = null);
+        Task<int> GetCountAsync(Expression<Func<TAggregateRoot, bool>>? filter = null, CancellationToken cancellationToken = default);
+        void Remove(Expression<Func<TAggregateRoot, bool>> filter);
+        void Remove(TAggregateRoot entityToDelete);
+        void Remove(TKey id);
         void Update(TAggregateRoot entity);
-        Task UpdateAsync(TAggregateRoot entity);
-        void Delete(TAggregateRoot entity);
+        Task RemoveAsync(Expression<Func<TAggregateRoot, bool>>? filter, CancellationToken cancellationToken);
+        Task RemoveAsync(TAggregateRoot entityToDelete, CancellationToken cancellationToken);
+        Task RemoveAsync(TKey id, CancellationToken cancellationToken);
     }
 }

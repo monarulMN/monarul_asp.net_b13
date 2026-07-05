@@ -7,6 +7,6 @@ namespace DevSkill.Shop.Domain.Interfaces
     public interface IUnitOfWork
     {
         void Save();
-        Task SaveAsync();
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }
