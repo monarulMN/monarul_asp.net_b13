@@ -1,8 +1,13 @@
 ﻿using Cortex.Mediator;
 using DevSkill.Shop.Application.Contracts;
 using DevSkill.Shop.Application.Features.Categories.Command;
+using DevSkill.Shop.Application.Features.Categories.Query;
+using DevSkill.Shop.Domain.Entities;
+using DevSkill.Shop.Domain.Utilities;
+using DevSkill.Shop.Web.Areas.Admin.Models;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace DevSkill.Shop.Web.Areas.Admin.Controllers
 {
@@ -25,14 +30,48 @@ namespace DevSkill.Shop.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public JsonResult GetPagedCategories( object o)
+        [HttpPost]
+        public async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
         {
-            return Json(new
+
+            try
             {
-                recordsTotal = 0,
-                recordsFiltered = 0,
-                data = (new string[] { }).ToArray()
-            });
+                var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
+                query.SearchText = model.Search.Value;
+                query.SortText = model.FormatSortExpression("Name", "IsActive", "ImageName");
+
+                var (items, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery, 
+                    (IList<Category>, int, int)>(query);
+
+                var category = new
+                {
+                    recordsTotal = total,
+                    recordsFiltered = totalDisplay,
+                    data = (from item in items
+                            select new string[]
+                            {
+                                HttpUtility.HtmlEncode(item.Name),
+                                item.IsActive.ToString(),
+                                HttpUtility.HtmlEncode(item.ImageName),
+                                item.Id.ToString()
+                            }).ToArray()
+                };
+
+                return Json(category);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get category list");
+
+                return Json(DataTables.EmptyResult);
+            }
+
+            //return Json(new
+            //{
+            //    recordsTotal = 0,
+            //    recordsFiltered = 0,
+            //    data = (new string[] { }).ToArray()
+            //});
         }
 
         //public IActionResult Create()

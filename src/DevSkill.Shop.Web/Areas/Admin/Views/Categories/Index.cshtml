@@ -25,7 +25,6 @@
                     <table id="categories" class="table table-bordered table-hover w-100">
                         <thead>
                             <tr>
-                                <th>Sl</th>
                                 <th>Name</th>
                                 <th>IsActive</th>
                                 <th>ImageName</th>
@@ -35,6 +34,14 @@
                         <tbody>
                             
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>IsActive</th>
+                                <th>ImageName</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
 
                     </table>
                 </div>
@@ -63,17 +70,43 @@
 
 
     <script>
-        $("categories").DataTables({
-            processing: true,
-            serverSide: true,
-            response: true,
-            autoWidth: true,
-            pagingType: "simple_numbers",
-            ajax:{
-                url: "/Admin/Categories/GetPagedCategories",
-                type: "POST" 
-
-            }
+        $(function(){
+            $("#categories").DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                autoWidth: true,
+                pagingType: "simple_numbers",
+                ajax:{
+                    url: "/Admin/Categories/GetPagedCategories",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: function(d){
+                        return JSON.stringify(d);
+                    }
+                },
+                columnDefs:[
+                    {
+                        orderable: false,
+                        targets: -1,
+                        render: function (data, type, row){
+                            return `
+                            <div class = "dropdwon-menu">
+                                <button class= "btn btn-sm btn-outline-primary dropdwon-toggle" type = "button" data-bs-toggle = "dropdwon">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item text-success" href="">View</a></li>"
+                                    <li><a class="dropdown-item text-warning" href="">Edit</a></li>"
+                                    <li><button class="dropdown-item text-danger" data-id = ${data}>Delete</button></li>"
+                                </ul>
+                            </div>
+                            `;
+                        }
+                    }
+                ]
+            });
         });
     </script>
       

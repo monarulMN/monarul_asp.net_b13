@@ -16,7 +16,7 @@ namespace DevSkill.Shop.Infrastructure.Data.Repositories
         public async Task<(IList<Category>, int, int)> GetPagedCategories(GetAllCategoriesByPagingQuery query, 
             CancellationToken cancellationToken)
         {
-            return await GetDynamicAsync(x => x.Name.Contains(query.SearchText), 
+            return await GetDynamicAsync(x => query.SearchText == null || x.Name.Contains(query.SearchText), 
                 query.SortText, 
                 null, 
                 query.PageIndex, 
