@@ -4,10 +4,12 @@ using DevSkill.Shop.Application.Features.Categories.Command;
 using DevSkill.Shop.Application.Features.Categories.Query;
 using DevSkill.Shop.Domain.Entities;
 using DevSkill.Shop.Domain.Utilities;
+using DevSkill.Shop.Infrastructure.Extensions;
 using DevSkill.Shop.Web.Areas.Admin.Models;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
+using DevSkill.Shop.Infrastructure.Extensions;
 
 namespace DevSkill.Shop.Web.Areas.Admin.Controllers
 {
@@ -30,65 +32,97 @@ namespace DevSkill.Shop.Web.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
+
+        public IActionResult Create()
         {
+            var model = new CategoryCreateModel();
+            return View(model);
+        }
 
-            try
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Create(CategoryCreateModel model)
+        {
+            if (ModelState.IsValid)
             {
-                var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
-                query.SearchText = model.Search.Value;
-                query.SortText = model.FormatSortExpression("Name", "IsActive", "ImageName");
-
-                var (items, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery, 
-                    (IList<Category>, int, int)>(query);
-
-                var category = new
+                try
                 {
-                    recordsTotal = total,
-                    recordsFiltered = totalDisplay,
-                    data = (from item in items
-                            select new string[]
-                            {
+                    var command = _mapper.Map<CategoryAddCommand>(model);
+                    var category = _mediator.SendCommandAsync(command).Result;
+
+                    TempData.Put("ResponseMessage",
+                        new ResponseModel
+                        {
+                            Message = "Category successfully created",
+                            Type = ResponseTypes.Success
+                        });
+
+                }
+                catch (Exception ex)
+                {
+                    const string errorMessage = "Failed to create category";
+
+                    _logger.LogError(ex, errorMessage);
+
+                    TempData.Put("ResponseMessage",
+                        new ResponseModel
+                        {
+                            Message = errorMessage,
+                            Type = ResponseTypes.Success
+                        });
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                TempData.Put("ResponseMessage",
+                     new ResponseModel
+                     {
+                         Message = "Please provide all information.",
+                         Type = ResponseTypes.Success
+                     });
+
+                return View(model);
+            }
+
+
+
+            [HttpPost]
+
+            async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
+            {
+
+                try
+                {
+                    var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
+                    query.SearchText = model.Search.Value;
+                    query.SortText = model.FormatSortExpression("Name", "IsActive", "ImageName");
+
+                    var (items, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery,
+                        (IList<Category>, int, int)>(query);
+
+                    var category = new
+                    {
+                        recordsTotal = total,
+                        recordsFiltered = totalDisplay,
+                        data = (from item in items
+                                select new string[]
+                                {
                                 HttpUtility.HtmlEncode(item.Name),
                                 item.IsActive.ToString(),
                                 HttpUtility.HtmlEncode(item.ImageName),
                                 item.Id.ToString()
-                            }).ToArray()
-                };
+                                }).ToArray()
+                    };
 
-                return Json(category);
+                    return Json(category);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to get category list");
+
+                    return Json(DataTables.EmptyResult);
+                }
             }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, "Failed to get category list");
-
-                return Json(DataTables.EmptyResult);
-            }
-
-            //return Json(new
-            //{
-            //    recordsTotal = 0,
-            //    recordsFiltered = 0,
-            //    data = (new string[] { }).ToArray()
-            //});
         }
-
-        //public IActionResult Create()
-        //{
-        //    var model = new CategoryAddCommand();
-        //    return View(model);
-        //}
-
-        //[HttpPost, ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(CategoryAddCommand model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    var category = await _mediator.SendCommandAsync(model);
-        //    return RedirectToAction("Index");
-        //}
     }
 }
