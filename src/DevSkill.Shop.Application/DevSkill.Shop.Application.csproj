@@ -15,4 +15,11 @@
     <PackageReference Include="Mapster" Version="10.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\ProductImages\Command\" />
+    <Folder Include="Features\ProductImages\Query\" />
+    <Folder Include="Features\Stocks\Command\" />
+    <Folder Include="Features\Stocks\Query\" />
+  </ItemGroup>
+
 </Project>

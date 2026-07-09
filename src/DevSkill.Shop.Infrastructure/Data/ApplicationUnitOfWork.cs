@@ -11,13 +11,17 @@ namespace DevSkill.Shop.Infrastructure.Data
 
         public ICategoryRepository CategoryRepository {  get; private set; }
 
+        public IProductRepository ProductRepository {  get; private set; }
+
         public ApplicationUnitOfWork(ApplicationDbContext dbContext, 
             ITeamMemberRepository teamMemberRepository,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository,
+            IProductRepository productRepository)
             : base(dbContext)
         {
             TeamMemberRepository = teamMemberRepository;
             CategoryRepository = categoryRepository;
+            ProductRepository = productRepository;
         }
     }
 }

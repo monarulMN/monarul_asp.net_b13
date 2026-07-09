@@ -9,5 +9,6 @@ namespace DevSkill.Shop.Application.Contracts
     {
         public ITeamMemberRepository TeamMemberRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
+        public IProductRepository ProductRepository { get; }
     }
 }

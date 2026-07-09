@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DevSkill.Shop.Web.Areas.Admin.Models
+namespace DevSkill.Shop.Web.Areas.Admin.Models.Categories
 {
     public class CategoryCreateModel
     {

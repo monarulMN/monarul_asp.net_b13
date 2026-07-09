@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cortex.Mediator.DependencyInjection;
 using DevSkill.Shop.Application.Features.Categories.Command;
+using DevSkill.Shop.Application.Features.Products.Command;
 using DevSkill.Shop.Infrastructure.Data;
 using DevSkill.Shop.Infrastructure.Extensions;
 using DevSkill.Shop.Web;
@@ -54,7 +55,7 @@ try
     #region Cortex Mediator Configuration
 
     builder.Services.AddCortexMediator(
-        new[] {typeof(Program), typeof(CategoryAddCommand)},
+        new[] {typeof(Program), typeof(CategoryAddCommand), typeof(ProductAddCommand)},
         options => options.AddDefaultBehaviors()
         );
 

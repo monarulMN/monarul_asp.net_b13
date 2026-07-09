@@ -16,9 +16,9 @@ namespace DevSkill.Shop.Infrastructure.Data
         private readonly DbContext _dbContext;
         private readonly DbSet<TAggregateRoot> _dbSet;
 
-        public Repository(DbContext context)
+        public Repository(DbContext dbContext)
         {
-            _dbContext = context;
+            _dbContext = dbContext;
             _dbSet = _dbContext.Set<TAggregateRoot>();
         }
 
