@@ -1,5 +1,6 @@
 ﻿using Cortex.Mediator.Commands;
 using DevSkill.Shop.Application.Contracts;
+using DevSkill.Shop.Application.Exceptions;
 using DevSkill.Shop.Domain.Entities;
 using DevSkill.Shop.Domain.Utilities;
 using MapsterMapper;
@@ -21,13 +22,23 @@ namespace DevSkill.Shop.Application.Features.Categories.Command
         }
         public async Task<Category> Handle(CategoryAddCommand command, CancellationToken cancellationToken)
         {
-            var category = _mapper.Map<Category>(command);
-            category.Id = IdentityGenerator.NewSequentialGuid();
+            var isDuplicateName = await _unitOfWork.CategoryRepository.CheckDuplicateCategoryName(command.Name,
+                cancellationToken);
 
-            await _unitOfWork.CategoryRepository.AddAsync(category, cancellationToken);
-            await _unitOfWork.SaveAsync(cancellationToken);
+            if (!isDuplicateName)
+            {
+                var category = _mapper.Map<Category>(command);
+                category.Id = IdentityGenerator.NewSequentialGuid();
 
-            return category;
+                await _unitOfWork.CategoryRepository.AddAsync(category, cancellationToken);
+                await _unitOfWork.SaveAsync(cancellationToken);
+
+                return category;
+            }
+            else
+            {
+                throw new DuplicateDataException($"Category with name is Duplicate.");
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cortex.Mediator.DependencyInjection;
+using DevSkill.Shop.Application.Features.Categories.Command;
 using DevSkill.Shop.Infrastructure.Data;
 using DevSkill.Shop.Infrastructure.Extensions;
 using DevSkill.Shop.Web;
@@ -42,18 +43,18 @@ try
 
     #region Autofac Configuration
 
-    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    {
-        containerBuilder.RegisterModule(new WebModule(connectionString));
-    });
+    //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+    //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    //{
+    //    containerBuilder.RegisterModule(new WebModule(connectionString));
+    //});
 
     #endregion
 
     #region Cortex Mediator Configuration
 
     builder.Services.AddCortexMediator(
-        new[] {typeof(Program)},
+        new[] {typeof(Program), typeof(CategoryAddCommand)},
         options => options.AddDefaultBehaviors()
         );
 

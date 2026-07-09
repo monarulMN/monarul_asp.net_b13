@@ -9,6 +9,7 @@ namespace DevSkill.Shop.Application.Contracts
 {
     public interface ICategoryRepository : IRepository<Category, Guid>
     {
+        Task<bool> CheckDuplicateCategoryName(string name, CancellationToken cancellationToken);
         Task<(IList<Category>, int, int)> GetPagedCategories(GetAllCategoriesByPagingQuery query, 
             CancellationToken cancellationToken);
     }

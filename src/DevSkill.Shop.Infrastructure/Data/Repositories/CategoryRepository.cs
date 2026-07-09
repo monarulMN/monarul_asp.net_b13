@@ -24,5 +24,10 @@ namespace DevSkill.Shop.Infrastructure.Data.Repositories
                 true, 
                 cancellationToken);
         }
+
+        public async Task<bool> CheckDuplicateCategoryName(string name, CancellationToken cancellationToken)
+        {
+            return (await GetCountAsync(x => x.Name == name, cancellationToken)) > 0;
+        }
     }
 }

@@ -10,6 +10,8 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 using DevSkill.Shop.Infrastructure.Extensions;
+using DevSkill.Shop.Web.Codes;
+using DevSkill.Shop.Application.Exceptions;
 
 namespace DevSkill.Shop.Web.Areas.Admin.Controllers
 {
@@ -41,22 +43,32 @@ namespace DevSkill.Shop.Web.Areas.Admin.Controllers
 
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Create(CategoryCreateModel model)
+        public async Task<IActionResult> Create(CategoryCreateModel model)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 try
                 {
                     var command = _mapper.Map<CategoryAddCommand>(model);
-                    var category = _mediator.SendCommandAsync(command).Result;
+                    var category = await _mediator.SendCommandAsync(command);
 
-                    TempData.Put("ResponseMessage",
+                    TempData.Put(Constants.ResponseTempKey,
                         new ResponseModel
                         {
                             Message = "Category successfully created",
                             Type = ResponseTypes.Success
                         });
 
+                    return RedirectToAction(nameof(Index));
+                }
+                catch(DuplicateDataException oex)
+                {
+                    TempData.Put(Constants.ResponseTempKey,
+                        new ResponseModel
+                        {
+                            Message = oex.Message,
+                            Type = ResponseTypes.Danger
+                        });
                 }
                 catch (Exception ex)
                 {
@@ -64,65 +76,65 @@ namespace DevSkill.Shop.Web.Areas.Admin.Controllers
 
                     _logger.LogError(ex, errorMessage);
 
-                    TempData.Put("ResponseMessage",
+                    TempData.Put(Constants.ResponseTempKey,
                         new ResponseModel
                         {
                             Message = errorMessage,
-                            Type = ResponseTypes.Success
+                            Type = ResponseTypes.Danger
                         });
-
-                    return RedirectToAction(nameof(Index));
+                                        
                 }
-
-                TempData.Put("ResponseMessage",
+                
+            }
+            else
+            {
+                TempData.Put(Constants.ResponseTempKey,
                      new ResponseModel
                      {
                          Message = "Please provide all information.",
                          Type = ResponseTypes.Success
                      });
-
-                return View(model);
             }
+            return View(model);
+        }
 
 
+        [HttpPost]
+        public async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
+        {
 
-            [HttpPost]
-
-            async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
+            try
             {
+                var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
+                query.SearchText = model.Search.Value;
+                query.SortText = model.FormatSortExpression("Name", "IsActive", "ImageName");
 
-                try
+                var (items, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery,
+                    (IList<Category>, int, int)>(query);
+
+                var category = new
                 {
-                    var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
-                    query.SearchText = model.Search.Value;
-                    query.SortText = model.FormatSortExpression("Name", "IsActive", "ImageName");
-
-                    var (items, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery,
-                        (IList<Category>, int, int)>(query);
-
-                    var category = new
-                    {
-                        recordsTotal = total,
-                        recordsFiltered = totalDisplay,
-                        data = (from item in items
-                                select new string[]
-                                {
+                    recordsTotal = total,
+                    recordsFiltered = totalDisplay,
+                    data = (from item in items
+                            select new string[]
+                            {
                                 HttpUtility.HtmlEncode(item.Name),
                                 item.IsActive.ToString(),
                                 HttpUtility.HtmlEncode(item.ImageName),
                                 item.Id.ToString()
-                                }).ToArray()
-                    };
+                            }).ToArray()
+                };
 
-                    return Json(category);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to get category list");
+                return Json(category);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get category list");
 
-                    return Json(DataTables.EmptyResult);
-                }
+                return Json(DataTables.EmptyResult);
             }
         }
+
     }
 }

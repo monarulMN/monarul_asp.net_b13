@@ -10,6 +10,7 @@
                     <small class="text-muted float-end">(new)</small>
                 </div>
                 <div class="card-body">
+                    <partial name = "_ResponsePartial" /> 
                     <form asp-area="admin", asp-controller="categories" asp-action="create" asp-antiforgery="true">
                         <div class="mb-3">
                             <label class="form-label" asp-for="Name">Name</label>
