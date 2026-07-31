@@ -3,7 +3,7 @@
 **/obj
 **/*.user
 **/Logs/*
-**/temp
-
+**/node_modules
+**/*.xml
 
 
