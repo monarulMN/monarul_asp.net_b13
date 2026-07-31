@@ -15,6 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
+    .CreateBootstrapLogger();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);

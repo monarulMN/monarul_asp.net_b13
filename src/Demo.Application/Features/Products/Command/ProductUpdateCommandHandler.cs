@@ -24,8 +24,8 @@ namespace Demo.Application.Features.Products.Command
 
         public async Task<Product> Handle(ProductUpdateCommand command, CancellationToken cancellationToken)
         {
-            var isDuplicateName = await _unitOfWork.ProductRepository.IsDuplicateProductName(command.Name, command.Id,
-                cancellationToken);
+            var isDuplicateName = await _unitOfWork.ProductRepository.IsDuplicateProductName(command.Name, 
+                command.Id, cancellationToken);
 
             if (!isDuplicateName)
             {
@@ -34,7 +34,7 @@ namespace Demo.Application.Features.Products.Command
 
                 await _unitOfWork.ProductRepository.EditAsync(product, cancellationToken);
                 await _unitOfWork.SaveAsync(cancellationToken);
-
+                
                 return product;
             }
             else

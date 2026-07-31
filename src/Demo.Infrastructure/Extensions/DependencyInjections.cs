@@ -19,6 +19,7 @@ namespace Demo.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureDependency(this IServiceCollection services, string rootPath)
         {
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
             services.AddSingleton<IServerTime, ServerTime>();
             services.AddSingleton<IAuthorizationHandler, AgeRequirementHandler>();
