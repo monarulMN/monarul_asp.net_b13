@@ -22,13 +22,14 @@ namespace DevSkill.Shop.Application.Features.Categories.Command
         }
         public async Task<Category> Handle(CategoryAddCommand command, CancellationToken cancellationToken)
         {
-            var isDuplicateName = await _unitOfWork.CategoryRepository.CheckDuplicateCategoryName(command.Name,
+            var isDuplicateName = await _unitOfWork.CategoryRepository.CheckDuplicateCategoryName(command.Name, null,
                 cancellationToken);
 
             if (!isDuplicateName)
             {
                 var category = _mapper.Map<Category>(command);
                 category.Id = IdentityGenerator.NewSequentialGuid();
+                
 
                 await _unitOfWork.CategoryRepository.AddAsync(category, cancellationToken);
                 await _unitOfWork.SaveAsync(cancellationToken);

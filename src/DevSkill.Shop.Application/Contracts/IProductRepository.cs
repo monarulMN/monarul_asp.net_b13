@@ -9,7 +9,7 @@ namespace DevSkill.Shop.Application.Contracts
 {
     public interface IProductRepository : IRepository<Product, Guid>
     {
-        Task<bool> CheckDuplicateProductName(string name, CancellationToken cancellationToken);
+        Task<bool> CheckDuplicateProductName(string name, Guid? id, CancellationToken cancellationToken);
         Task<(IList<Product>, int, int)> GetPagedProducts(GetAllProductsByPagingQuery query, 
             CancellationToken cancellationToken);
     }

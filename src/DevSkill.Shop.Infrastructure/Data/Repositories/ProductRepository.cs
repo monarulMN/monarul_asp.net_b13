@@ -28,9 +28,12 @@ namespace DevSkill.Shop.Infrastructure.Data.Repositories
                 cancellationToken);
         }
 
-        public async Task<bool> CheckDuplicateProductName(string name, CancellationToken cancellationToken)
+        public async Task<bool> CheckDuplicateProductName(string name, Guid? id, CancellationToken cancellationToken)
         {
-            return (await GetCountAsync(x => x.Name == name, cancellationToken)) > 0;
+            if(!id.HasValue)
+                return (await GetCountAsync(x => x.Name == name, cancellationToken)) > 0;
+            else
+                return (await GetCountAsync(x => x.Name == name && x.Id != id.Value, cancellationToken)) > 0;
         }
     }
 }
