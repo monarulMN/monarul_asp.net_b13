@@ -3,7 +3,9 @@
 **/obj
 **/*.user
 **/Logs/*
+**/node_modules
+**/*.xml
 **/temp
-
+**/*.yml
 
 
