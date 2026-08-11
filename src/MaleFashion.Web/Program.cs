@@ -16,8 +16,12 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+    var migrationAssembly = typeof(ApplicationDbContext).Assembly;
+
     #region Dependency Injection
-        builder.Services.AddInfrastructureDependency();
+
+    builder.Services.AddInfrastructureDependency();
+
     #endregion
 
     #region Serilog Configuration
@@ -30,8 +34,13 @@ try
 
     #endregion
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
+    #region DbContext Configuration
+
+    builder.Services.AddDbContext(connectionString, migrationAssembly);
+
+    #endregion
+
+
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
