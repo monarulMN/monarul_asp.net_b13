@@ -1,4 +1,5 @@
-using MaleFashion.Web.Data;
+using MaleFashion.Infrastructure.Data;
+using MaleFashion.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -12,16 +13,20 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-    #region Serilig Configuration
+    #region Dependency Injection
+        builder.Services.AddInfrastructureDependency();
+    #endregion
+
+    #region Serilog Configuration
 
     builder.Host.UseSerilog((context, lc) => lc
         .MinimumLevel.Debug()
         .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        .ReadFrom.Configuration(context.Configuration)
-    );
+        .ReadFrom.Configuration(context.Configuration));
 
     #endregion
 

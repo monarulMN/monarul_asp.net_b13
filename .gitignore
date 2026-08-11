@@ -6,6 +6,7 @@
 **/node_modules
 **/*.xml
 **/temp
-**/*.yml
+**/*.env
+
 
 
