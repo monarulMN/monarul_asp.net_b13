@@ -66,7 +66,12 @@ try
 
     app.UseAuthorization();
 
-    app.MapStaticAssets();
+    app.MapStaticAssets(); 
+
+    app.MapControllerRoute(
+        name: "area",
+        pattern: "{area:exists}/{controller=AdminPanel}/{action=Index}/{id?}")
+        .WithStaticAssets();
 
     app.MapControllerRoute(
         name: "default",

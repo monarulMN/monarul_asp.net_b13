@@ -10,7 +10,9 @@ namespace MaleFashion.Infrastructure.Extensions
 {
     public static class DbContextExtension
     {
-        public static void AddDbContext(this IServiceCollection services, string connectionString, Assembly migrationAssembly)
+        public static void AddDbContext(this IServiceCollection services, 
+            string connectionString, 
+            Assembly migrationAssembly)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString, 
