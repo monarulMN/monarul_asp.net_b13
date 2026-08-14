@@ -43,8 +43,12 @@ try
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+    #region Identity Configuration
+
+    //builder.Services.AddIdentity();
+
+    #endregion
+
     builder.Services.AddControllersWithViews();
 
     var app = builder.Build();
@@ -62,14 +66,12 @@ try
     }
 
     app.UseHttpsRedirection();
-
-    app.UseStaticFiles();
-
     app.UseRouting();
 
     app.UseAuthorization();
 
     app.MapStaticAssets();
+    app.UseStaticFiles();
 
     app.MapControllerRoute(
         name: "area",
