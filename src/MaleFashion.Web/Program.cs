@@ -32,6 +32,7 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(context.Configuration));
 
+
     #endregion
 
     #region DbContext Configuration
@@ -45,7 +46,7 @@ try
 
     #region Identity Configuration
 
-    //builder.Services.AddIdentity();
+    builder.Services.AddIdentity();
 
     #endregion
 
@@ -91,7 +92,7 @@ try
     app.MapRazorPages()
        .WithStaticAssets();
 
-    Log.Information("Application Starting Up");
+    Log.Information("Application Starting");
 
     app.Run();
 }
