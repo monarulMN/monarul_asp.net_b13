@@ -7,5 +7,6 @@ namespace MaleFashion.Application.Contracts
 {
     public interface IApplicationUnitOfWork : IUnitOfWork
     {
+        
     }
 }

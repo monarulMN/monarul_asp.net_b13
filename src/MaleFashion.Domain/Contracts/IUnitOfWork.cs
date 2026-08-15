@@ -6,7 +6,7 @@ namespace MaleFashion.Domain.Contracts
 {
     public interface IUnitOfWork
     {
-        void Save(CancellationToken cancellationToken);
+        void Save();
         Task SaveAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,10 +1,7 @@
 ﻿using MaleFashion.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace MaleFashion.Infrastructure.Extensions
 {
@@ -14,9 +11,9 @@ namespace MaleFashion.Infrastructure.Extensions
             string connectionString, 
             Assembly migrationAssembly)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString, 
-                    s => s.MigrationsAssembly(migrationAssembly)));
+            services.AddDbContext<ApplicationDbContext> (options =>
+                options.UseSqlServer (connectionString,
+                x => x.MigrationsAssembly(migrationAssembly)));
         }
     }
 }

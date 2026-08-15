@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MaleFashion.Infrastructure.Data
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public abstract class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DbContext _dbContext;
 
@@ -14,19 +14,22 @@ namespace MaleFashion.Infrastructure.Data
         {
             _dbContext = dbContext;
         }
+
         public void Dispose()
         {
-            _dbContext?.Dispose();
+            _dbContext.Dispose();
         }
 
-        public void Save(CancellationToken cancellationToken)
+        public void Save()
         {
             _dbContext.SaveChanges();
         }
 
         public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+        
     }
 }

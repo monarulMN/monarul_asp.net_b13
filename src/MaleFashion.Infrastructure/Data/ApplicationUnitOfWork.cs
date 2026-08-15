@@ -8,8 +8,10 @@ namespace MaleFashion.Infrastructure.Data
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext dbContext) : base(dbContext)
+        public ApplicationUnitOfWork(ApplicationDbContext dbContext)
+            : base(dbContext)
         {
+            
         }
     }
 }

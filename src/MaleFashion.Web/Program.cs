@@ -1,5 +1,5 @@
-using MaleFashion.Infrastructure.Data;
 using MaleFashion.Infrastructure.Extensions;
+using MaleFashion.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -19,23 +19,21 @@ try
     var migrationAssembly = typeof(ApplicationDbContext).Assembly;
 
     #region Dependency Injection
-
     builder.Services.AddInfrastructureDependency();
-
     #endregion
-
+    
     #region Serilog Configuration
 
     builder.Host.UseSerilog((context, lc) => lc
         .MinimumLevel.Debug()
         .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        .ReadFrom.Configuration(context.Configuration));
-
+        .ReadFrom.Configuration(context.Configuration)
+        );
 
     #endregion
 
-    #region DbContext Configuration
+    #region DbContext Configuration]
 
     builder.Services.AddDbContext(connectionString, migrationAssembly);
 
@@ -44,12 +42,8 @@ try
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    #region Identity Configuration
-
-    builder.Services.AddIdentity();
-
-    #endregion
-
+    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+        .AddEntityFrameworkStores<ApplicationDbContext>();
     builder.Services.AddControllersWithViews();
 
     var app = builder.Build();
@@ -76,12 +70,7 @@ try
 
     app.MapControllerRoute(
         name: "area",
-        pattern: "{area:exists}/{controller=CustomerPanel}/{action=Index}/{id?}")
-        .WithStaticAssets();
-
-    app.MapControllerRoute(
-        name: "area",
-        pattern: "{area:exists}/{controller=AdminPanel}/{action=Index}/{id?}")
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
         .WithStaticAssets();
 
     app.MapControllerRoute(
@@ -92,7 +81,7 @@ try
     app.MapRazorPages()
        .WithStaticAssets();
 
-    Log.Information("Application Starting");
+    Log.Information("Starting up the application...");
 
     app.Run();
 }
