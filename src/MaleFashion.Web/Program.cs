@@ -19,7 +19,9 @@ try
     var migrationAssembly = typeof(ApplicationDbContext).Assembly;
 
     #region Dependency Injection
+
     builder.Services.AddInfrastructureDependency();
+
     #endregion
     
     #region Serilog Configuration
@@ -42,8 +44,12 @@ try
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+    #region Identity Configuration
+
+    builder.Services.AddIdentity();
+
+    #endregion
+
     builder.Services.AddControllersWithViews();
 
     var app = builder.Build();
