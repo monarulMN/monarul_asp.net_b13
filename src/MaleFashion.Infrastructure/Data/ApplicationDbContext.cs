@@ -1,4 +1,5 @@
-﻿using MaleFashion.Infrastructure.Identity;
+﻿using MaleFashion.Domain.Entities;
+using MaleFashion.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,5 +14,6 @@ namespace MaleFashion.Infrastructure.Data
         ApplicationRoleClaim,
         ApplicationUserToken>(options)
     {
+        public DbSet<Category> Categories { get; set; }
     }
 }
