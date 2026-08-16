@@ -19,16 +19,18 @@ namespace MaleFashion.Web.Controllers
 
         public IActionResult Index()
         {
-            _unitOfWork.CategoryRepository.Add(new Category
+            _unitOfWork.ProductRepository.Add(new Product
             {
                 Id = Guid.NewGuid(),
                 Name = "sample category",
                 Description = "Electric device",
-                ImageUrl = "category.png",
+                Price = 2000,
+                DiscountPrice = 0,
+                MainImageUrl = "category.png",
                 IsActive = true,
                 CreatedDate = DateTime.Now
             });
-            //_unitOfWork.Save();
+            _unitOfWork.Save();
             return View();
         }
 

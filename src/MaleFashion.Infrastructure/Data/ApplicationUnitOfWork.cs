@@ -10,10 +10,14 @@ namespace MaleFashion.Infrastructure.Data
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
         public ICategoryRepository CategoryRepository { get; private set; }
-        public ApplicationUnitOfWork(ApplicationDbContext dbContext, ICategoryRepository categoryRepository)
+        public IProductRepository ProductRepository { get; private set; }
+        public ApplicationUnitOfWork(ApplicationDbContext dbContext, 
+            ICategoryRepository categoryRepository,
+            IProductRepository productRepository)
             : base(dbContext)
         {
             CategoryRepository = categoryRepository;
+            ProductRepository = productRepository;
         }
 
     }

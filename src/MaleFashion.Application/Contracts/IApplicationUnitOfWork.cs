@@ -9,5 +9,6 @@ namespace MaleFashion.Application.Contracts
     public interface IApplicationUnitOfWork : IUnitOfWork
     {
         public ICategoryRepository CategoryRepository { get; }
+        public IProductRepository ProductRepository { get; }
     }
 }
