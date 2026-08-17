@@ -34,7 +34,7 @@ namespace MaleFashion.Web.Controllers
                 CreatedDate = DateTime.Now,
                 CategoryId = Guid.Parse("0bf999e7-f582-4224-9ae7-adc7b2e1c5f1")
             });
-            _unitOfWork.Save();
+            //_unitOfWork.Save();
             return View();
         }
 

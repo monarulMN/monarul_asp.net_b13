@@ -16,6 +16,7 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
             // Add your infrastructure services here
             // For example, you can add database context, repositories, etc.

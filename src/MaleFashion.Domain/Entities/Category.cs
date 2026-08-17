@@ -14,6 +14,7 @@ namespace MaleFashion.Domain.Entities
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public ICollection<Product> Products { get; set; } 
+            = new List<Product>();
     }
 }

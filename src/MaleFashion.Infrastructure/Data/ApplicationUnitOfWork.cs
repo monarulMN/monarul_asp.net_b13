@@ -11,13 +11,20 @@ namespace MaleFashion.Infrastructure.Data
     {
         public ICategoryRepository CategoryRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
+        public IProductImageRepository ProductImageRepository { get; private set; }
+        public ISizeRepository SizeRepository { get; private set; }
+
         public ApplicationUnitOfWork(ApplicationDbContext dbContext, 
             ICategoryRepository categoryRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IProductImageRepository productImageRepository,
+            ISizeRepository sizeRepository)
             : base(dbContext)
         {
             CategoryRepository = categoryRepository;
             ProductRepository = productRepository;
+            ProductImageRepository = productImageRepository;
+            SizeRepository = sizeRepository;
         }
 
     }
