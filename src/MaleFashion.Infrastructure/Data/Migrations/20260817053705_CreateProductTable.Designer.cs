@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaleFashion.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260816201322_CreateProductTable")]
+    [Migration("20260817053705_CreateProductTable")]
     partial class CreateProductTable
     {
         /// <inheritdoc />
@@ -60,6 +60,9 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -88,13 +91,14 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SKU")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -305,6 +309,17 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("MaleFashion.Domain.Entities.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRoleClaim", b =>
                 {
                     b.HasOne("MaleFashion.Infrastructure.Identity.ApplicationRole", null)
@@ -354,6 +369,11 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MaleFashion.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

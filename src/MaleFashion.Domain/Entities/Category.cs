@@ -13,5 +13,7 @@ namespace MaleFashion.Domain.Entities
         public string ImageUrl { get; set; } = null!;
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

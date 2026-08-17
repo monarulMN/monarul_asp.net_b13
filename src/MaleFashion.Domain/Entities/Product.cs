@@ -9,23 +9,17 @@ namespace MaleFashion.Domain.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-
         public string Description { get; set; } = null!;
-
         public decimal Price { get; set; }
-
         public decimal? DiscountPrice { get; set; }
-
         public int StockQuantity { get; set; }
-
         public string? SKU { get; set; }
-
         public string MainImageUrl { get; set; } = null!;
-
         public bool IsFeatured { get; set; }
-
         public bool IsActive { get; set; }
-
         public DateTime CreatedDate { get; set; }
+
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
