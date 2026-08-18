@@ -13,12 +13,15 @@ namespace MaleFashion.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructureDependency(this IServiceCollection services)
         {
+            // Add your infrastructure services here
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            services.AddScoped<ISizeRepository, SizeRepository>();
+            services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
 
-            // Add your infrastructure services here
+            
             // For example, you can add database context, repositories, etc.
             return services;
         }
