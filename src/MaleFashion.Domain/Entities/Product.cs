@@ -34,5 +34,14 @@ namespace MaleFashion.Domain.Entities
         public ICollection<CartItem> CartItems { get; set; }
             = new List<CartItem>();
 
+        public ICollection<OrderItem> OrderItems { get; set; }
+            = new List<OrderItem>();
+
+        public ICollection<WishListItem> WishlistItems { get; set; }
+            = new List<WishListItem>();
+
+        public ICollection<Review> Reviews { get; set; } 
+            = new List<Review>();
+
     }
 }

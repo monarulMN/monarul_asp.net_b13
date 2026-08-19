@@ -1,5 +1,6 @@
 ﻿using MaleFashion.Application.Contracts;
 using MaleFashion.Application.Contracts.Repositories;
+using MaleFashion.Domain.Entities;
 using MaleFashion.Infrastructure.Data;
 using MaleFashion.Infrastructure.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,10 +23,15 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
             services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<IProductColorRepository, ProductColorRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IWishListRepository, WishListRepository>();
+            services.AddScoped<IWishListItemRepository, WishListItemRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
-            
             // For example, you can add database context, repositories, etc.
             return services;
         }

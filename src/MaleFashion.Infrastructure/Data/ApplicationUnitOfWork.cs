@@ -16,8 +16,14 @@ namespace MaleFashion.Infrastructure.Data
         public IProductSizeRepository ProductSizeRepository { get; private set; }
         public IColorRepository ColorRepository { get; private set; }
         public IProductColorRepository ProductColorRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; }
         public ICartRepository CartRepository { get; private set; }
         public ICartItemRepository CartItemRepository { get; private set; }
+        public IOrderRepository OrderRepository { get; private set; }
+        public IOrderItemRepository OrderItemRepository { get; private set; }
+        public IWishListRepository WishListRepository { get; private set; }
+        public IWishListItemRepository WishListItemRepository { get; private set;  }
+        public IReviewRepository ReviewRepository { get; private set; }
 
 
         public ApplicationUnitOfWork(ApplicationDbContext dbContext,
@@ -28,8 +34,14 @@ namespace MaleFashion.Infrastructure.Data
             IProductSizeRepository productSizeRepository,
             IColorRepository colorRepository,
             IProductColorRepository prodcutColorRepository,
+            IUserRepository userRepository,
             ICartRepository cartRepository,
-            ICartItemRepository cartItemRepository)
+            ICartItemRepository cartItemRepository,
+            IOrderRepository orderRepository,
+            IOrderItemRepository orderItemRepository,
+            IWishListRepository wishListRepository,
+            IWishListItemRepository wishListItemRepository,
+            IReviewRepository reviewRepository)
             : base(dbContext)
         {
             CategoryRepository = categoryRepository;
@@ -39,8 +51,14 @@ namespace MaleFashion.Infrastructure.Data
             ProductSizeRepository = productSizeRepository;
             ColorRepository = colorRepository;
             ProductColorRepository = prodcutColorRepository;
+            UserRepository = userRepository;
             CartRepository = cartRepository;
             CartItemRepository = cartItemRepository;
+            OrderRepository = orderRepository;
+            OrderItemRepository = orderItemRepository;
+            WishListRepository = wishListRepository;
+            WishListItemRepository = wishListItemRepository;
+            ReviewRepository = reviewRepository;
         }
 
     }
