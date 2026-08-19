@@ -11,7 +11,7 @@ namespace MaleFashion.Domain.Entities
         public string Name { get; set; }
         public bool IsActive { get; set; }
 
-        public ICollection<ProductSize> Sizes { get; set; } 
+        public ICollection<ProductSize> ProductSizes { get; set; } 
             = new List<ProductSize>();
     }
 }
