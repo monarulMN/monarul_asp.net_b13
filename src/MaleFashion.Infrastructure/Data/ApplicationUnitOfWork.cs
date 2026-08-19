@@ -16,6 +16,8 @@ namespace MaleFashion.Infrastructure.Data
         public IProductSizeRepository ProductSizeRepository { get; private set; }
         public IColorRepository ColorRepository { get; private set; }
         public IProductColorRepository ProductColorRepository { get; private set; }
+        public ICartRepository CartRepository { get; private set; }
+        public ICartItemRepository CartItemRepository { get; private set; }
 
 
         public ApplicationUnitOfWork(ApplicationDbContext dbContext,
@@ -25,7 +27,9 @@ namespace MaleFashion.Infrastructure.Data
             ISizeRepository sizeRepository,
             IProductSizeRepository productSizeRepository,
             IColorRepository colorRepository,
-            IProductColorRepository prodcutColorRepository)
+            IProductColorRepository prodcutColorRepository,
+            ICartRepository cartRepository,
+            ICartItemRepository cartItemRepository)
             : base(dbContext)
         {
             CategoryRepository = categoryRepository;
@@ -35,6 +39,8 @@ namespace MaleFashion.Infrastructure.Data
             ProductSizeRepository = productSizeRepository;
             ColorRepository = colorRepository;
             ProductColorRepository = prodcutColorRepository;
+            CartRepository = cartRepository;
+            CartItemRepository = cartItemRepository;
         }
 
     }

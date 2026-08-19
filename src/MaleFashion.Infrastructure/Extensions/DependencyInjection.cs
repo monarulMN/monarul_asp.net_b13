@@ -22,6 +22,8 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
             services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<IProductColorRepository, ProductColorRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
 
             
             // For example, you can add database context, repositories, etc.

@@ -31,5 +31,8 @@ namespace MaleFashion.Domain.Entities
         public ICollection<ProductColor> ProductColors { get; set; }
             = new List<ProductColor>();
 
+        public ICollection<CartItem> CartItems { get; set; }
+            = new List<CartItem>();
+
     }
 }

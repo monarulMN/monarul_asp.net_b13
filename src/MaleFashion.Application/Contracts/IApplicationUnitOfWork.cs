@@ -15,5 +15,7 @@ namespace MaleFashion.Application.Contracts
         public IProductSizeRepository ProductSizeRepository { get; }
         public IColorRepository ColorRepository { get; }
         public IProductColorRepository ProductColorRepository { get; }
+        public ICartRepository CartRepository { get; }
+        public ICartItemRepository CartItemRepository { get; }
     }
 }
