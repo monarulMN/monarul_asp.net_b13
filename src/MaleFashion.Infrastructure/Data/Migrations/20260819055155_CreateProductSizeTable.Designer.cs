@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaleFashion.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260818100654_CreateProductSizeTable")]
+    [Migration("20260819055155_CreateProductSizeTable")]
     partial class CreateProductSizeTable
     {
         /// <inheritdoc />
@@ -402,7 +402,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductSize", b =>
                 {
                     b.HasOne("MaleFashion.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductSizes")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -477,6 +477,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
                 {
                     b.Navigation("ProductImages");
+
+                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>

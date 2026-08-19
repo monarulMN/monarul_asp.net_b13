@@ -19,6 +19,8 @@ namespace MaleFashion.Infrastructure.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<ProductSize> ProductSizes { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<ProductColor> ProductColors { get; set; }
 
     }
 }

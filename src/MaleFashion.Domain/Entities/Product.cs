@@ -24,5 +24,12 @@ namespace MaleFashion.Domain.Entities
 
         public ICollection<ProductImage> ProductImages { get; set; } 
             = new List<ProductImage>();
+
+        public ICollection<ProductSize> ProductSizes { get; set; } 
+            = new List<ProductSize>();
+
+        public ICollection<ProductColor> ProductColors { get; set; }
+            = new List<ProductColor>();
+
     }
 }
