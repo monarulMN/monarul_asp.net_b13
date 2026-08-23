@@ -4,10 +4,10 @@
 }
 
 
-<div class="d-flex justify-content-center align-items-center mb-3 col-md-offset-2">
+<div class="d-flex justify-content-center align-items-center mb-3 ">
     <div class="col-md-4 ">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" asp-antiforgery="true">
-            <h3>Create a new account.</h3>
+            <h2>@ViewData["Title"] a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-2">
