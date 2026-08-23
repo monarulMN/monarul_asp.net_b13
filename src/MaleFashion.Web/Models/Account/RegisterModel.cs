@@ -1,12 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace MaleFashion.Web.Models.Account
 {
     public class RegisterModel
     {
+        [Required]
         public string FirstName { get; set; }
+
+        [Required]
         public string LastName { get; set; }
+
+        [Required]
         public DateTime DateOfBirth { get; set; }
 
         [Required]

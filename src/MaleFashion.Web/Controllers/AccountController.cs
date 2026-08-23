@@ -40,7 +40,7 @@ namespace MaleFashion.Web.Controllers
             model.ReturnUrl = returnUrl;
             model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            return View();
+            return View(model);
         }
 
 
@@ -70,7 +70,7 @@ namespace MaleFashion.Web.Controllers
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
+                    var callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Account",
                         values: new { area = "", userId = userId, code = code, returnUrl = model.ReturnUrl },

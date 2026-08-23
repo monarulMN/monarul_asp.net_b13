@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MaleFashion.Infrastructure.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser,
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : 
+        IdentityDbContext<ApplicationUser,
         ApplicationRole,
         Guid,
         ApplicationUserClaim,
