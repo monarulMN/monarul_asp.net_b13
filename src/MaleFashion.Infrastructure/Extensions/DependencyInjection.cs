@@ -1,8 +1,10 @@
 ﻿using MaleFashion.Application.Contracts;
 using MaleFashion.Application.Contracts.Repositories;
+using MaleFashion.Application.Contracts.Services;
 using MaleFashion.Domain.Entities;
 using MaleFashion.Infrastructure.Data;
 using MaleFashion.Infrastructure.Data.Repositories;
+using MaleFashion.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,8 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<IWishListRepository, WishListRepository>();
             services.AddScoped<IWishListItemRepository, WishListItemRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+
+            services.AddScoped<IEmailService, EmailService>();
 
             // For example, you can add database context, repositories, etc.
             return services;
