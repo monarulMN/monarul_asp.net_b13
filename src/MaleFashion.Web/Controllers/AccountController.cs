@@ -3,6 +3,7 @@ using MaleFashion.Infrastructure.Identity;
 using MaleFashion.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
@@ -66,7 +67,7 @@ namespace MaleFashion.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    //_logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -80,7 +81,7 @@ namespace MaleFashion.Web.Controllers
                     var fullName = $"{user.FirstName} {user.LastName}";
 
                     await _emailService.SendEmailAsync(fullName, model.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -154,6 +155,106 @@ namespace MaleFashion.Web.Controllers
             return View(model);
         }
 
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout(string? returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                // This needs to be a redirect so that the browser performs a new
+                // request and the identity for the user gets updated.
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+
+                // For more information on how to enable account confirmation and password reset please
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Action(
+                    "ResetPassword",
+                    "Account",                    
+                    values: new { area = "", code },
+                    protocol: Request.Scheme)!;
+
+                await _emailService.SendEmailAsync(
+                    model.Email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+
+        public IActionResult ResetPassword(string? code = null)
+        {
+            var model = new ResetPasswordModel();
+            if (code == null)
+            {
+                return BadRequest("A code must be supplied for password reset.");
+            }
+            else
+            {
+                model = new ResetPasswordModel()
+                {
+                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+                };
+                return View();
+            }
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToPage("./ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToPage("./ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
 
 
         private ApplicationUser CreateUser()
