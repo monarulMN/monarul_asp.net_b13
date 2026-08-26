@@ -38,6 +38,9 @@ namespace MaleFashion.Infrastructure.Extensions
                 //User settings
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+
             });
         }
     }

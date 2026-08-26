@@ -4,46 +4,56 @@
     Layout = "_AccountLayout";
 }
 
-<div class=" d-flex justify-content-center mt-1 ">
-    <div class="col-md-5 ">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>@ViewData["Title"] a new account.</h2>
-            <hr />
+<div class="account-container">
+    <div class="account-box">
+        <h2 class="text-center mb-4">Register</h2>
+        <form asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="Email">Email</label>
                 <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="FirstName">First Name</label>
                 <input asp-for="FirstName" class="form-control" autocomplete="given-name" aria-required="true" placeholder="First Name" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="LastName">Last Name</label>
                 <input asp-for="LastName" class="form-control" autocomplete="family-name" aria-required="true" placeholder="Last Name" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="DateOfBirth">Date of Birth</label>
                 <input asp-for="DateOfBirth" class="form-control" autocomplete="bday" aria-required="true" placeholder="Date of Birth" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="Password">Password</label>
                 <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-1">
+            <div class="form-floating mb-3">
                 <label asp-for="ConfirmPassword">Confirm Password</label>
-                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm password" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>            
+            <div>
+                <input type="submit" value="Register" class="btn btn-success w-100 p-2" />
+                <p class="text-center mt-2">
+                   Already have an account?
+                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none" asp-route-returnUrl="@Model.ReturnUrl">Login</a>
+                </p>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <div class="text-center">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none mt-3">Back</a>
+            </div>
         </form>
-    </div>    
+        
+    </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -67,7 +67,7 @@ namespace MaleFashion.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -172,6 +172,7 @@ namespace MaleFashion.Web.Controllers
             }
         }
 
+
         public async Task<IActionResult> ForgotPassword()
         {
             return View();
@@ -186,7 +187,7 @@ namespace MaleFashion.Web.Controllers
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction("ForgotPasswordConfirmation");
+                    return RedirectToAction("Login");
                 }
 
                 // For more information on how to enable account confirmation and password reset please
@@ -194,42 +195,44 @@ namespace MaleFashion.Web.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Action(
-                    "ResetPassword",
+                    "ChangePassword",
                     "Account",                    
                     values: new { area = "", code },
                     protocol: Request.Scheme)!;
 
                 await _emailService.SendEmailAsync(
                     model.Email,
-                    "Reset Password",
+                    "ChangePassword",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToAction("ForgotPasswordConfirmation");
+                return RedirectToAction("ChangePassword");
             }
 
             return View(model);
         }
 
+        
 
-        public IActionResult ResetPassword(string? code = null)
+        public IActionResult ChangePassword(string? code = null)
         {
-            var model = new ResetPasswordModel();
+            var model = new ChangePasswordModel();
             if (code == null)
             {
                 return BadRequest("A code must be supplied for password reset.");
             }
             else
             {
-                model = new ResetPasswordModel()
+                model = new ChangePasswordModel()
                 {
                     Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
                 };
-                return View();
+
+                return View(model);
             }
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -240,13 +243,13 @@ namespace MaleFashion.Web.Controllers
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToPage("./ResetPasswordConfirmation");
+                return RedirectToAction("ForgotPassword");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            var result = await _userManager.ChangePasswordAsync(user, model.Code, model.NewPassword);
             if (result.Succeeded)
             {
-                return RedirectToPage("./ResetPasswordConfirmation");
+                return RedirectToAction("Login", "Account");
             }
 
             foreach (var error in result.Errors)
@@ -256,6 +259,8 @@ namespace MaleFashion.Web.Controllers
             return View(model);
         }
 
+
+        
 
         private ApplicationUser CreateUser()
         {

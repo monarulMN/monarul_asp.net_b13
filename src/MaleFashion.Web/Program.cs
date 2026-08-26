@@ -6,6 +6,7 @@ using Serilog;
 using MaleFashion.Domain.Utilities;
 
 
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
     .CreateBootstrapLogger();
@@ -43,16 +44,17 @@ try
 
     #endregion
 
-
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     #region Identity Configuration
 
     builder.Services.AddIdentity();
 
-    #endregion
-    builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+    #endregion    
+
     #region AppSettings Configuration
+
+    builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
     #endregion
 
@@ -105,6 +107,8 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+
 
 
 
