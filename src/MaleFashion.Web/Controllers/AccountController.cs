@@ -160,6 +160,7 @@ namespace MaleFashion.Web.Controllers
         public async Task<IActionResult> Logout(string? returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -197,7 +198,7 @@ namespace MaleFashion.Web.Controllers
                 var callbackUrl = Url.Action(
                     "ChangePassword",
                     "Account",                    
-                    values: new { area = "", code },
+                    values: new {ara ="", code = code, email = model.Email},
                     protocol: Request.Scheme)!;
 
                 await _emailService.SendEmailAsync(
@@ -246,7 +247,7 @@ namespace MaleFashion.Web.Controllers
                 return RedirectToAction("ForgotPassword");
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, model.Code, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
             if (result.Succeeded)
             {
                 return RedirectToAction("Login", "Account");

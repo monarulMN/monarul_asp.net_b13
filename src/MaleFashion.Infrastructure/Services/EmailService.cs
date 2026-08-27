@@ -48,9 +48,35 @@ namespace MaleFashion.Infrastructure.Services
             }
         }
 
-        public async Task SendEmailAsync(string email, string v1, string v2)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
-            
+            //send code in emaill for forgot password 
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_smtpSettings.FromName, _smtpSettings.FromEmail));
+            message.To.Add(new MailboxAddress($"{email}", subject));
+            message.Subject = subject;
+
+            message.Body = new TextPart("html")
+            {
+                Text = body
+            };
+
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync(_smtpSettings.Host, _smtpSettings.Port,
+                    _smtpSettings.SmtpEncryption != SmtpExcryptionTypes.Normal);
+
+                client.Timeout = _smtpSettings.Timeout;
+
+                if (!string.IsNullOrEmpty(_smtpSettings.Username))
+                {
+                    await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
+                }
+
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+
+            }
         }
     }
 }
