@@ -173,6 +173,10 @@ namespace MaleFashion.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> AccessDenied()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> ForgotPassword()
         {
@@ -186,44 +190,65 @@ namespace MaleFashion.Web.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction("Login");
+                { 
+                    return RedirectToAction("ForgotPasswordConfirmation");
                 }
-
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                                
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Action(
-                    "ChangePassword",
+                    "ResetPassword",
                     "Account",                    
                     values: new {ara ="", code = code, email = model.Email},
                     protocol: Request.Scheme)!;
 
                 await _emailService.SendEmailAsync(
                     model.Email,
-                    "ChangePassword",
+                    "ResetPassword",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToAction("ChangePassword");
+                return RedirectToAction("ForgotPasswordConfirmation");
             }
 
             return View(model);
         }
 
-        
 
-        public IActionResult ChangePassword(string? code = null)
+        public async Task<IActionResult> ForgotPasswordConfirmation()
         {
-            var model = new ChangePasswordModel();
+            return View();
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            return View(code);
+        }
+
+
+        public async Task<IActionResult> ResetPassword(string? code = null)
+        {
+            var model = new ResetPasswordModel();
             if (code == null)
             {
                 return BadRequest("A code must be supplied for password reset.");
             }
             else
             {
-                model = new ChangePasswordModel()
+                model = new ResetPasswordModel()
                 {
                     Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
                 };
@@ -232,8 +257,9 @@ namespace MaleFashion.Web.Controllers
             }
         }
 
+
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -244,13 +270,13 @@ namespace MaleFashion.Web.Controllers
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction("ForgotPassword");
+                return RedirectToAction("ResetPasswordConfirmation");
             }
 
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
             if (result.Succeeded)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("ResetPasswordConfirmation");
             }
 
             foreach (var error in result.Errors)
@@ -261,7 +287,59 @@ namespace MaleFashion.Web.Controllers
         }
 
 
-        
+        public async Task<IActionResult> ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+            if (!hasPassword)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            _logger.LogInformation("User changed their password successfully.");
+            var statusMessage = "Your password has been changed.";
+
+            return RedirectToAction("Login", "Account");
+        }
+
 
         private ApplicationUser CreateUser()
         {

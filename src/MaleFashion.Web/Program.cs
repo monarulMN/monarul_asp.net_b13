@@ -7,6 +7,7 @@ using MaleFashion.Domain.Utilities;
 
 
 
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
     .CreateBootstrapLogger();
