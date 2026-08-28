@@ -102,40 +102,7 @@ namespace MaleFashion.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> RegisterConfirm(string email, string? returnUrl = null)
-        {
-            var model = new RegisterConfirmModel();
-            if (email == null)
-            {
-                return RedirectToAction("Index");
-            }
-            returnUrl = returnUrl ?? Url.Content("~/");
-
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with email '{email}'.");
-            }
-
-            model.Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            model.DisplayConfirmAccountLink = true;
-            if (model.DisplayConfirmAccountLink)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                model.EmailConfirmationUrl = Url.Action(
-                    "ConfirmEmail",
-                    "Account",
-                    values: new { area = "", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
-            }
-
-            return View();
-        }
-
-
+        
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -151,7 +118,9 @@ namespace MaleFashion.Web.Controllers
 
             var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
+
             var statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+
             return View();
         }
 
@@ -205,6 +174,7 @@ namespace MaleFashion.Web.Controllers
                     return View(model);
                 }
             }
+
             return View(model);
         }
 
@@ -226,15 +196,18 @@ namespace MaleFashion.Web.Controllers
             }
         }
 
+
         public async Task<IActionResult> AccessDenied()
         {
             return View();
         }
 
+
         public async Task<IActionResult> ForgotPassword()
         {
             return View();
         }
+
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
@@ -261,37 +234,26 @@ namespace MaleFashion.Web.Controllers
                     "ResetPassword",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                return RedirectToAction("ResetPassword", "Account");
             }
 
             return View(model);
         }
 
 
-        public async Task<IActionResult> ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        
-
-
         public async Task<IActionResult> ResetPassword(string? code = null)
         {
-            var model = new ResetPasswordModel();
             if (code == null)
             {
                 return BadRequest("A code must be supplied for password reset.");
             }
-            else
-            {
-                model = new ResetPasswordModel()
-                {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
-                };
 
-                return View(model);
-            }
+            var model = new ResetPasswordModel()
+            {
+                Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+            };
+
+            return View(model);
         }
 
 
@@ -307,27 +269,23 @@ namespace MaleFashion.Web.Controllers
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation");
+                return RedirectToAction("ForgotPassword", "Account");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("ResetPasswordConfirmation");
+                return RedirectToAction("Login", "Account");
             }
 
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+
             return View(model);
         }
 
-
-        public async Task<IActionResult> ResetPasswordConfirmation()
-        {
-            return View();
-        }
 
         public async Task<IActionResult> ChangePassword()
         {
@@ -345,6 +303,7 @@ namespace MaleFashion.Web.Controllers
 
             return View();
         }
+
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
@@ -391,6 +350,7 @@ namespace MaleFashion.Web.Controllers
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
+
 
         private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
