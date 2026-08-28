@@ -102,6 +102,59 @@ namespace MaleFashion.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> RegisterConfirm(string email, string? returnUrl = null)
+        {
+            var model = new RegisterConfirmModel();
+            if (email == null)
+            {
+                return RedirectToAction("Index");
+            }
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with email '{email}'.");
+            }
+
+            model.Email = email;
+            // Once you add a real email sender, you should remove this code that lets you confirm the account
+            model.DisplayConfirmAccountLink = true;
+            if (model.DisplayConfirmAccountLink)
+            {
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                model.EmailConfirmationUrl = Url.Action(
+                    "ConfirmEmail",
+                    "Account",
+                    values: new { area = "", userId = userId, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
+            }
+
+            return View();
+        }
+
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
+            var statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            return View();
+        }
+
 
         public async Task<IActionResult> Login(string? returnUrl = null)
         {
@@ -189,9 +242,10 @@ namespace MaleFashion.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
+                //bool abc = await _userManager.IsEmailConfirmedAsync(user);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 { 
-                    return RedirectToAction("ForgotPasswordConfirmation");
+                    return RedirectToAction("Login", "Account");
                 }
                                 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -207,7 +261,7 @@ namespace MaleFashion.Web.Controllers
                     "ResetPassword",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToAction("ForgotPasswordConfirmation");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             return View(model);
@@ -219,24 +273,7 @@ namespace MaleFashion.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
-
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            var statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
-            return View(code);
-        }
+        
 
 
         public async Task<IActionResult> ResetPassword(string? code = null)

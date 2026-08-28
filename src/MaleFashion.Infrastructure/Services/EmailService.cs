@@ -65,22 +65,6 @@ namespace MaleFashion.Infrastructure.Services
 
             await SendMessageAsync(message);
 
-            //using (var client = new SmtpClient())
-            //{
-            //    await client.ConnectAsync(_smtpSettings.Host, _smtpSettings.Port,
-            //        _smtpSettings.SmtpEncryption != SmtpExcryptionTypes.Normal);
-
-            //    client.Timeout = _smtpSettings.Timeout;
-
-            //    if (!string.IsNullOrEmpty(_smtpSettings.Username))
-            //    {
-            //        await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
-            //    }
-
-            //    await client.SendAsync(message);
-            //    await client.DisconnectAsync(true);
-
-            //}
         }
 
         private async Task SendMessageAsync(MimeMessage message)

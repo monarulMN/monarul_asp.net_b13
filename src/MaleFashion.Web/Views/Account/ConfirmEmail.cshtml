@@ -4,4 +4,28 @@
     Layout = "_AccountLayout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="account-container">
+    <div class="account-box">
+        <h2 class="text-center mb-4">Confirm Email</h2>
+            <form method="post" asp-action="ConfirmEmail" >
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Confirm" class="btn btn-success w-100 p-2" />
+                    
+                </div>
+                <div class="text-center">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none mt-3">Back</a>
+                </div>
+            </form>
+    </div>    
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
