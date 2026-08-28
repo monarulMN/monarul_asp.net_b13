@@ -39,7 +39,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UnitPrice = table.Column<double>(type: "float", nullable: false),
                     SizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ColorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },

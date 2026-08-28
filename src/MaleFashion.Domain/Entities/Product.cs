@@ -10,8 +10,8 @@ namespace MaleFashion.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public decimal Price { get; set; }
-        public decimal? DiscountPrice { get; set; }
+        public double Price { get; set; }
+        public double? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
         public string? SKU { get; set; }
         public string MainImageUrl { get; set; } = null!;
@@ -22,10 +22,10 @@ namespace MaleFashion.Domain.Entities
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public ICollection<ProductImage> ProductImages { get; set; } 
+        public ICollection<ProductImage> ProductImages { get; set; }
             = new List<ProductImage>();
 
-        public ICollection<ProductSize> ProductSizes { get; set; } 
+        public ICollection<ProductSize> ProductSizes { get; set; }
             = new List<ProductSize>();
 
         public ICollection<ProductColor> ProductColors { get; set; }
@@ -40,7 +40,7 @@ namespace MaleFashion.Domain.Entities
         public ICollection<WishListItem> WishlistItems { get; set; }
             = new List<WishListItem>();
 
-        public ICollection<Review> Reviews { get; set; } 
+        public ICollection<Review> Reviews { get; set; }
             = new List<Review>();
 
     }

@@ -31,7 +31,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WishListsItems",
+                name: "WishListItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -41,15 +41,15 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishListsItems", x => x.Id);
+                    table.PrimaryKey("PK_WishListItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WishListsItems_Products_ProductId",
+                        name: "FK_WishListItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WishListsItems_WishLists_WishListId",
+                        name: "FK_WishListItems_WishLists_WishListId",
                         column: x => x.WishListId,
                         principalTable: "WishLists",
                         principalColumn: "Id",
@@ -57,27 +57,27 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_WishListItems_ProductId",
+                table: "WishListItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishListItems_WishListId",
+                table: "WishListItems",
+                column: "WishListId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WishLists_UserId",
                 table: "WishLists",
                 column: "UserId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WishListsItems_ProductId",
-                table: "WishListsItems",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WishListsItems_WishListId",
-                table: "WishListsItems",
-                column: "WishListId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "WishListsItems");
+                name: "WishListItems");
 
             migrationBuilder.DropTable(
                 name: "WishLists");

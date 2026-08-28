@@ -26,135 +26,135 @@ namespace MaleFashion.Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrdersItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<WishList> WishLists { get; set; }
-        public DbSet<WishListItem> WishListsItems { get; set; }
+        public DbSet<WishListItem> WishListItems { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
 
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasOne(x => x.Category)
-                      .WithMany(x => x.Products)
-                      .HasForeignKey(x => x.CategoryId);
-            });
+        //    modelBuilder.Entity<Product>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Category)
+        //              .WithMany(x => x.Products)
+        //              .HasForeignKey(x => x.CategoryId);
+        //    });
 
 
-            modelBuilder.Entity<ProductImage>(entity =>
-            {
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.ProductImages)
-                      .HasForeignKey(x => x.ProductId);
-            });
+        //    modelBuilder.Entity<ProductImage>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.ProductImages)
+        //              .HasForeignKey(x => x.ProductId);
+        //    });
 
 
-            modelBuilder.Entity<ProductColor>(entity =>
-            {
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.ProductColors)
-                      .HasForeignKey(x => x.ProductId);
+        //    modelBuilder.Entity<ProductColor>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.ProductColors)
+        //              .HasForeignKey(x => x.ProductId);
 
-                entity.HasOne(x => x.Color)
-                      .WithMany(x => x.ProductColors)
-                      .HasForeignKey(x => x.ColorId);
-            });
+        //        entity.HasOne(x => x.Color)
+        //              .WithMany(x => x.ProductColors)
+        //              .HasForeignKey(x => x.ColorId);
+        //    });
 
-            //modelBuilder.Entity<ProductColor>(entity =>
-            //{
-            //    entity.HasOne(x => x.Color)
-            //          .WithMany(x => x.ProductColors)
-            //          .HasForeignKey(x => x.ColorId);
-            //});
+        //    //modelBuilder.Entity<ProductColor>(entity =>
+        //    //{
+        //    //    entity.HasOne(x => x.Color)
+        //    //          .WithMany(x => x.ProductColors)
+        //    //          .HasForeignKey(x => x.ColorId);
+        //    //});
 
 
-            modelBuilder.Entity<ProductSize>(entity =>
-            {
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.ProductSizes) 
-                      .HasForeignKey(x => x.ProductId);
+        //    modelBuilder.Entity<ProductSize>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.ProductSizes)
+        //              .HasForeignKey(x => x.ProductId);
 
-                entity.HasOne(x => x.Size)
-                      .WithMany(x => x.ProductSizes)
-                      .HasForeignKey(x => x.SizeId);
-            });
+        //        entity.HasOne(x => x.Size)
+        //              .WithMany(x => x.ProductSizes)
+        //              .HasForeignKey(x => x.SizeId);
+        //    });
 
-            modelBuilder.Entity<Cart>(entity =>
-            {
-                entity.HasOne(x => x.User)
-                      .WithOne(x => x.Cart)
-                      .HasForeignKey<Cart>(x => x.UserId);
-            });
-            
-            modelBuilder.Entity<CartItem>(entity =>
-            {
-                entity.HasOne(x => x.Cart)
-                      .WithMany(x => x.CartItems)
-                      .HasForeignKey(x => x.CartId);
+        //    modelBuilder.Entity<Cart>(entity =>
+        //    {
+        //        entity.HasOne(x => x.User)
+        //              .WithOne(x => x.Cart)
+        //              .HasForeignKey<Cart>(x => x.UserId);
+        //    });
 
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.CartItems)
-                      .HasForeignKey(x => x.ProductId);
+        //    modelBuilder.Entity<CartItem>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Cart)
+        //              .WithMany(x => x.CartItems)
+        //              .HasForeignKey(x => x.CartId);
 
-                entity.HasOne(x => x.Size)
-                      .WithMany()
-                      .HasForeignKey(x => x.SizeId);
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.CartItems)
+        //              .HasForeignKey(x => x.ProductId);
 
-                entity.HasOne(x => x.Color)
-                      .WithMany()
-                      .HasForeignKey(x => x.ColorId);
-            });
+        //        entity.HasOne(x => x.Size)
+        //              .WithMany()
+        //              .HasForeignKey(x => x.SizeId);
 
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.HasOne(x => x.User)
-                      .WithMany(x => x.Orders)
-                      .HasForeignKey(x => x.UserId);
-            });
-            
-            modelBuilder.Entity<OrderItem>(entity =>
-            {
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.OrderItems)
-                      .HasForeignKey(x => x.ProductId);
+        //        entity.HasOne(x => x.Color)
+        //              .WithMany()
+        //              .HasForeignKey(x => x.ColorId);
+        //    });
 
-                entity.HasOne(x => x.Order)
-                      .WithMany(x => x.OrderItems)
-                      .HasForeignKey(x => x.OrderId);
-            });
+        //    modelBuilder.Entity<Order>(entity =>
+        //    {
+        //        entity.HasOne(x => x.User)
+        //              .WithMany(x => x.Orders)
+        //              .HasForeignKey(x => x.UserId);
+        //    });
 
-            modelBuilder.Entity<WishList>(entity =>
-            {
-                entity.HasOne(x => x.User)
-                      .WithOne(x => x.WishList)
-                      .HasForeignKey<WishList>(x => x.UserId);
-            });
+        //    modelBuilder.Entity<OrderItem>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.OrderItems)
+        //              .HasForeignKey(x => x.ProductId);
 
-            modelBuilder.Entity<WishListItem>(entity =>
-            {
-                entity.HasOne(x => x.WishList)
-                      .WithMany(x => x.WishlistItems)
-                      .HasForeignKey(x => x.WishListId);
+        //        entity.HasOne(x => x.Order)
+        //              .WithMany(x => x.OrderItems)
+        //              .HasForeignKey(x => x.OrderId);
+        //    });
 
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.WishlistItems)
-                      .HasForeignKey(x => x.ProductId);
-            });
+        //    modelBuilder.Entity<WishList>(entity =>
+        //    {
+        //        entity.HasOne(x => x.User)
+        //              .WithOne(x => x.WishList)
+        //              .HasForeignKey<WishList>(x => x.UserId);
+        //    });
 
-            modelBuilder.Entity<Review>(entity =>
-            {
-                entity.HasOne(x => x.Product)
-                      .WithMany(x => x.Reviews)
-                      .HasForeignKey(x => x.ProductId);
+        //    modelBuilder.Entity<WishListItem>(entity =>
+        //    {
+        //        entity.HasOne(x => x.WishList)
+        //              .WithMany(x => x.WishlistItems)
+        //              .HasForeignKey(x => x.WishListId);
 
-                entity.HasOne(x => x.User)
-                      .WithMany(x => x.Reviews)
-                      .HasForeignKey(x => x.UserId);
-            });
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.WishlistItems)
+        //              .HasForeignKey(x => x.ProductId);
+        //    });
 
-        }
+        //    modelBuilder.Entity<Review>(entity =>
+        //    {
+        //        entity.HasOne(x => x.Product)
+        //              .WithMany(x => x.Reviews)
+        //              .HasForeignKey(x => x.ProductId);
+
+        //        entity.HasOne(x => x.User)
+        //              .WithMany(x => x.Reviews)
+        //              .HasForeignKey(x => x.UserId);
+        //    });
+
+        //}
     }
 }

@@ -42,7 +42,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.CartItem", b =>
@@ -66,8 +66,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Property<Guid?>("SizeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -79,7 +79,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Category", b =>
@@ -108,7 +108,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Color", b =>
@@ -127,7 +127,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors", (string)null);
+                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Order", b =>
@@ -136,8 +136,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("DiscountAmount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -162,8 +162,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ShippingAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("ShippingAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("ShippingCity")
                         .IsRequired()
@@ -181,11 +181,11 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("SubTotal")
+                        .HasColumnType("float");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -194,7 +194,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.OrderItem", b =>
@@ -224,11 +224,11 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -236,7 +236,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrdersItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
@@ -255,8 +255,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("DiscountPrice")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -272,8 +272,8 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("SKU")
                         .HasColumnType("nvarchar(max)");
@@ -285,7 +285,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductColor", b =>
@@ -309,7 +309,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductColors", (string)null);
+                    b.ToTable("ProductColors");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductImage", b =>
@@ -335,7 +335,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages", (string)null);
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductSize", b =>
@@ -359,7 +359,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("ProductSizes", (string)null);
+                    b.ToTable("ProductSizes");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Review", b =>
@@ -393,7 +393,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
@@ -402,16 +402,9 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes", (string)null);
+                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>
@@ -437,7 +430,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishList", b =>
@@ -457,7 +450,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("WishLists", (string)null);
+                    b.ToTable("WishLists");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishListItem", b =>
@@ -481,7 +474,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("WishListId");
 
-                    b.ToTable("WishListsItems", (string)null);
+                    b.ToTable("WishListItems");
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRole", b =>
@@ -812,7 +805,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MaleFashion.Domain.Entities.Size", "Size")
-                        .WithMany("Sizes")
+                        .WithMany()
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -957,11 +950,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("WishlistItems");
-                });
-
-            modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
-                {
-                    b.Navigation("Sizes");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>

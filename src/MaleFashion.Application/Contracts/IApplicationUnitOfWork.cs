@@ -21,6 +21,7 @@ namespace MaleFashion.Application.Contracts
         public IOrderRepository OrderRepository { get; }
         public IOrderItemRepository OrderItemRepository { get; }
         public IWishListRepository WishListRepository { get; }
+        public IWishListItemRepository WishListItemRepository { get; }
         public IReviewRepository ReviewRepository { get; }
     }
 }

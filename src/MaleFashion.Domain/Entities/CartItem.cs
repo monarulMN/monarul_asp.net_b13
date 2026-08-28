@@ -17,7 +17,7 @@ namespace MaleFashion.Domain.Entities
 
         public int Quantity { get; set; }
 
-        public decimal UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
 
         public Guid? SizeId { get; set; }
         public Size Size { get; set; }

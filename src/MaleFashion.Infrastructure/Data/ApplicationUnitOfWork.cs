@@ -22,7 +22,7 @@ namespace MaleFashion.Infrastructure.Data
         public IOrderRepository OrderRepository { get; private set; }
         public IOrderItemRepository OrderItemRepository { get; private set; }
         public IWishListRepository WishListRepository { get; private set; }
-        public IWishListItemRepository WishListItemRepository { get; private set;  }
+        public IWishListItemRepository WishListItemRepository { get; private set; }
         public IReviewRepository ReviewRepository { get; private set; }
 
 
