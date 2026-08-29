@@ -7,6 +7,6 @@ namespace MaleFashion.Application.Contracts.Services
     public interface IEmailService
     {
         Task SendEmailAsync(string receiverName, string receiverEmail, string subject, string body);
-        Task SendEmailAsync(string email, string subject, string body);
+        
     }
 }

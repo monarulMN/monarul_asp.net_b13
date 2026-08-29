@@ -42,7 +42,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.CartItem", b =>
@@ -79,7 +79,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Category", b =>
@@ -108,7 +108,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Color", b =>
@@ -127,7 +127,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Order", b =>
@@ -194,7 +194,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.OrderItem", b =>
@@ -236,7 +236,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
@@ -285,7 +285,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductColor", b =>
@@ -309,7 +309,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductColors");
+                    b.ToTable("ProductColors", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductImage", b =>
@@ -335,7 +335,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductSize", b =>
@@ -359,7 +359,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("ProductSizes");
+                    b.ToTable("ProductSizes", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Review", b =>
@@ -393,7 +393,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
@@ -402,9 +402,16 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("Sizes", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>
@@ -430,7 +437,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishList", b =>
@@ -450,7 +457,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("WishLists");
+                    b.ToTable("WishLists", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishListItem", b =>
@@ -474,7 +481,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("WishListId");
 
-                    b.ToTable("WishListItems");
+                    b.ToTable("WishListItems", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRole", b =>
@@ -805,7 +812,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MaleFashion.Domain.Entities.Size", "Size")
-                        .WithMany()
+                        .WithMany("ProductSizes")
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -950,6 +957,11 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("WishlistItems");
+                });
+
+            modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
+                {
+                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>

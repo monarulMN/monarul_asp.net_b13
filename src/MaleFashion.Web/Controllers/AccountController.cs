@@ -1,4 +1,6 @@
 ﻿using MaleFashion.Application.Contracts.Services;
+using MaleFashion.Domain.Entities;
+using MaleFashion.Infrastructure.Extensions;
 using MaleFashion.Infrastructure.Identity;
 using MaleFashion.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -6,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Identity.Client.NativeInterop;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
 using System.Text.Encodings.Web;
 
@@ -85,7 +89,8 @@ namespace MaleFashion.Web.Controllers
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToAction("RegisterConfirmation", new { email = model.Email, returnUrl = model.ReturnUrl });
+                        return RedirectToAction("RegisterConfirmation", new { email = model.Email, 
+                            returnUrl = model.ReturnUrl });
                     }
                     else
                     {
@@ -107,6 +112,7 @@ namespace MaleFashion.Web.Controllers
         {
             if (userId == null || code == null)
             {
+                TempData["message"] = " UserId or Code is null!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -119,7 +125,7 @@ namespace MaleFashion.Web.Controllers
             var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
 
-            var statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            TempData["message"] = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
 
             return View();
         }
@@ -150,10 +156,9 @@ namespace MaleFashion.Web.Controllers
             model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            { 
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, 
+                    model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -161,7 +166,8 @@ namespace MaleFashion.Web.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToAction("LoginWith2fa", "Account", new { ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("LoginWith2fa", "Account", new { ReturnUrl = model.ReturnUrl, 
+                        RememberMe = model.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -190,8 +196,6 @@ namespace MaleFashion.Web.Controllers
             }
             else
             {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -208,52 +212,76 @@ namespace MaleFashion.Web.Controllers
             return View();
         }
 
+       
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                //bool abc = await _userManager.IsEmailConfirmedAsync(user);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                { 
-                    return RedirectToAction("Login", "Account");
+                if (string.IsNullOrWhiteSpace(model.Email))
+                {
+                    TempData["message"] = "Email address is Invalid!";
+                    return View();
                 }
-                                
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    TempData["message"] = "No User Found";
+                    return View();
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
                 var callbackUrl = Url.Action(
                     "ResetPassword",
-                    "Account",                    
-                    values: new {ara ="", code = code, email = model.Email},
-                    protocol: Request.Scheme)!;
+                    "Account",
+                    new
+                    {
+                        userId = user.Id,
+                        token = token
+                    },
+                    protocol: Request.Scheme);
 
                 await _emailService.SendEmailAsync(
-                    model.Email,
-                    "ResetPassword",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"{user.FirstName} {user.LastName}",
+                    user.Email!,
+                    "Reset Password",
+                    $"<p>Please click the link below to reset your password.</p><p><a href='{callbackUrl}'>Reset Password</a></p>");
 
-                return RedirectToAction("ResetPassword", "Account");
+                Console.WriteLine(callbackUrl);
+               
+
+                return View(TempData["message"] = "Reset password token has been sent to your email address"); 
             }
 
             return View(model);
         }
 
 
-        public async Task<IActionResult> ResetPassword(string? code = null)
+       
+        public async Task<IActionResult> ResetPassword(string? userId, string? token)
         {
-            if (code == null)
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
             {
-                return BadRequest("A code must be supplied for password reset.");
+                return BadRequest("Password reset link is invalid.");
             }
 
-            var model = new ResetPasswordModel()
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user is not null)
             {
-                Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
-            };
+                var model = new ResetPasswordModel
+                {
+                    UserId = userId,
+                    Token = token,
+                    Email = user.Email ?? string.Empty
+                };
 
-            return View(model);
+                return View(model);
+            }
+            return RedirectToAction("Login", "Account");
         }
 
 
@@ -265,16 +293,21 @@ namespace MaleFashion.Web.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
             if (user == null)
             {
-                // Don't reveal that the user does not exist
                 return RedirectToAction("ForgotPassword", "Account");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            var result = await _userManager.ResetPasswordAsync(
+                user,
+                model.Token,
+                model.Password);
+
             if (result.Succeeded)
             {
+                TempData["message"] = "Password reset successful.";
                 return RedirectToAction("Login", "Account");
             }
 
@@ -285,6 +318,7 @@ namespace MaleFashion.Web.Controllers
 
             return View(model);
         }
+
 
 
         public async Task<IActionResult> ChangePassword()
