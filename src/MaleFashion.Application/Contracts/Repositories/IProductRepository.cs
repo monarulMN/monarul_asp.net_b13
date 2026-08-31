@@ -10,5 +10,6 @@ namespace MaleFashion.Application.Contracts.Repositories
     public interface IProductRepository : IRepository<Product, Guid>
     {
         Task<(IList<Product>, int, int)> GetPagedProducts(GetAllProductsByPagingQuery query, CancellationToken cancellationToken);
+        Task<bool> IsDuplicateProductName(string name, CancellationToken cancellationToken);
     }
 }

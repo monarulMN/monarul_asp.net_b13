@@ -113,7 +113,7 @@ namespace MaleFashion.Web.Controllers
             if (userId == null || code == null)
             {
                 TempData["message"] = " UserId or Code is null!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -196,7 +196,7 @@ namespace MaleFashion.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -281,7 +281,7 @@ namespace MaleFashion.Web.Controllers
 
                 return View(model);
             }
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction(nameof(Login));
         }
 
 
@@ -297,7 +297,7 @@ namespace MaleFashion.Web.Controllers
 
             if (user == null)
             {
-                return RedirectToAction("ForgotPassword", "Account");
+                return RedirectToAction(nameof(ForgotPassword));
             }
 
             var result = await _userManager.ResetPasswordAsync(
@@ -308,7 +308,7 @@ namespace MaleFashion.Web.Controllers
             if (result.Succeeded)
             {
                 TempData["message"] = "Password reset successful.";
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction(nameof(Login));
             }
 
             foreach (var error in result.Errors)
@@ -332,7 +332,7 @@ namespace MaleFashion.Web.Controllers
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction(nameof(Login));
             }
 
             return View();
@@ -367,7 +367,7 @@ namespace MaleFashion.Web.Controllers
             _logger.LogInformation("User changed their password successfully.");
             var statusMessage = "Your password has been changed.";
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction(nameof(Login));
         }
 
 

@@ -1,6 +1,8 @@
 ﻿using Cortex.Mediator.Commands;
 using MaleFashion.Application.Contracts;
+using MaleFashion.Application.Exceptions;
 using MaleFashion.Domain.Entities;
+using MaleFashion.Domain.Utilities;
 using MapsterMapper;
 using System;
 using System.Collections.Generic;
@@ -20,19 +22,20 @@ namespace MaleFashion.Application.Features.Products.Command
         }
         public async Task<Product> Handle(ProductAddCommand command, CancellationToken cancellationToken)
         {
-
-            var product = new Product
+            var isDuplicateName = await _unitOfWork.ProductRepository.IsDuplicateProductName(command.Name, cancellationToken);
+            if (!isDuplicateName)
             {
-                Id = command.Id,
-                Name = command.Name,
-                Description = command.Description,
-                Price = command.Price,
-                DiscountPrice= command.DiscountPrice
-            };
-            await _unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
-            await _unitOfWork.SaveAsync(cancellationToken);
+                var product = _mapper.Map<Product>(command);
+                product.Id = IdentityGenerator.NewSequentialGuid();
 
-            return product;
+                await _unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
+                await _unitOfWork.SaveAsync(cancellationToken);
+
+                return product;
+            }
+            else
+                throw new DuplicateDataException("Product name is duplicate!");
+            
         }
     }
 }
