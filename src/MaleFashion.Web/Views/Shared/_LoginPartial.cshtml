@@ -8,17 +8,28 @@
     @if (SignInManager.IsSignedIn(User))
     {
         @* <a asp-area="Admin" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity?.Name!</a> *@
+        <div class="header__top__hover">
+            <span>
+                <a href="#" class="account-icon " ><i class="fa fa-user"></i> </a>
+            </span>
+            <ul>
+                <form class="form-inline" asp-area="" asp-controller="Account" asp-action="ChangePassword">
+                    <button type="submit" class="btn btn-link ">ChangePassword</button>
+                </form>
+                @* <input asp-area="" asp-controller="Account" asp-action="ChangePassword" class="btn btn-link" value="ChangePassword"/> *@
 
-        <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" 
-            asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="btn btn-link ">Logout</button>
-        </form>
+                <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
+                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="btn btn-link ">Logout</button>
+                </form>
+            </ul>
+        </div>
     }
     else
     {
-        <a asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        <a asp-area="" asp-controller="Account" asp-action="Register">Sign Up</a>
 
-        <a asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        <a asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
     }
 </div>
 

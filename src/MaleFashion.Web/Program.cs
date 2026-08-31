@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using MaleFashion.Domain.Utilities;
+using Cortex.Mediator.DependencyInjection;
+using Mapster;
+using MaleFashion.Application.Features.Products.Command;
+
 
 
 
@@ -35,6 +39,21 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(context.Configuration)
         );
+
+    #endregion
+
+    #region Cortex Mediator Configuration
+
+    builder.Services.AddCortexMediator(
+        new[] { typeof(Program), typeof(ProductAddCommand) },
+        options => options.AddDefaultBehaviors()
+        );
+
+    #endregion
+
+    #region Mapster Configuration
+    //Default Configuration
+    builder.Services.AddMapster();
 
     #endregion
 
@@ -84,7 +103,7 @@ try
 
     app.MapControllerRoute(
         name: "area",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+        pattern: "{area:exists}/{controller=Dashbord}/{action=Index}/{id?}")
         .WithStaticAssets();
 
     app.MapControllerRoute(

@@ -18,3 +18,22 @@
     width:100%;
     opacity:.9;
 }
+
+
+/*account menu*/
+.account-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 25px;
+}
+
+
+
+
+
+

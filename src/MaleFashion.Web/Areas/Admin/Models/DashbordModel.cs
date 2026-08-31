@@ -1,6 +1,6 @@
 ﻿namespace MaleFashion.Web.Areas.Admin.Models
 {
-    public class HomeModel
+    public class DashbordModel
     {
     }
 }

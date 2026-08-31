@@ -3,7 +3,7 @@
 namespace MaleFashion.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class HomeController : Controller
+    public class DashbordController : Controller
     {
         public IActionResult Index()
         {

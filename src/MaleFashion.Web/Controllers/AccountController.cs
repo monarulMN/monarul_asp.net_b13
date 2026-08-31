@@ -85,7 +85,7 @@ namespace MaleFashion.Web.Controllers
                     var fullName = $"{user.FirstName} {user.LastName}";
 
                     await _emailService.SendEmailAsync(fullName, model.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click here</a>.");
+                        $"Please confirm your account by <a href='{callbackUrl}'>Confirm your email</a>");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
