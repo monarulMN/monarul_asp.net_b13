@@ -1,4 +1,5 @@
 ﻿
+using MaleFashion.Application.Features.Customers.Query;
 using MaleFashion.Domain.Contracts;
 using MaleFashion.Domain.Entities;
 using System;
@@ -9,6 +10,6 @@ namespace MaleFashion.Application.Contracts.Repositories
 {
     public interface IUserRepository : IRepository<User, Guid>
     {
-        
+        Task<(IList<User>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query, CancellationToken cancellationToken);
     }
 }

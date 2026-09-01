@@ -12,15 +12,41 @@
                     <partial name="_ResponsePartial" />
                     <form asp-area="admin" asp-controller="products" asp-action="create" asp-antiforgery="true"
                           enctype="multipart/form-data" method="post">
-                        <div class="mb-4">
-                            <label class="form-label" asp-for="Name">Name</label>
-                            <input type="text" class="form-control" asp-for="Name" placeholder="Camera" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                        <div class="row ">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="Name">Name</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Camera" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="Description">Description</label>
+                                <input type="text" class="form-control" asp-for="Description" placeholder="Camera description" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label" asp-for="Price">Price</label>
-                            <input type="number" class="form-control" asp-for="Price" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
+                        <div class="row ">
+                             <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="Price">Price</label>
+                                <input type="number" class="form-control" asp-for="Price" placeholder="0.00" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                                <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="DiscountPrice">Discount Price</label>
+                                <input type="number" class="form-control" asp-for="DiscountPrice" placeholder="0.00" />
+                                <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="StockQuantity">Stock Quantity</label>
+                                <input type="number" class="form-control" asp-for="StockQuantity" placeholder="0" />
+                                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="SKU">SKU</label>
+                                <input type="text" class="form-control" asp-for="SKU" placeholder="SKU" />
+                                <span asp-validation-for="SKU" class="text-danger"></span>
+                            </div>
                         </div>
                         
                         <button type="submit" class="btn btn-primary">Create</button>
