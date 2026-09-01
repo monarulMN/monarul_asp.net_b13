@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MaleFashion.Web.Areas.Admin.Controllers
+namespace MaleFashion.Web.Areas.Customer.Controllers
 {
-    [Area("Admin")]
-    public class DashbordController : Controller
+    [Area("Customer")]
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {

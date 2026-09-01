@@ -31,7 +31,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> GetPagedCategories(CategoryListModel model)
+        public async Task<JsonResult> GetPagedCategories([FromBody] CategoryListModel model)
         {
             try
             {
