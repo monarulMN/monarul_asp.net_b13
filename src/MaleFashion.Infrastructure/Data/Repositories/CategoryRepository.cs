@@ -1,9 +1,12 @@
 ﻿using MaleFashion.Application.Contracts.Repositories;
+using MaleFashion.Application.Features.Categories.Query;
+using MaleFashion.Application.Features.Products.Query;
 using MaleFashion.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MaleFashion.Infrastructure.Data.Repositories
 {
@@ -11,6 +14,22 @@ namespace MaleFashion.Infrastructure.Data.Repositories
     {
         public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<(IList<Category>, int, int)> GetPagedCategories(GetAllCategoriesByPagingQuery query, CancellationToken cancellationToken)
+        {
+            return await GetDynamicAsync(x => query.SearchText == null || x.Name.Contains(query.SearchText),
+                query.SortText,
+                null,
+                query.PageIndex,
+                query.PageSize,
+                true,
+                cancellationToken);
+        }
+
+        public async Task<bool> IsDuplicateCategoryName(string name, CancellationToken cancellationToken)
+        {
+            return (await GetCountAsync(x => x.Name == name, cancellationToken)) > 0;
         }
     }
 }
