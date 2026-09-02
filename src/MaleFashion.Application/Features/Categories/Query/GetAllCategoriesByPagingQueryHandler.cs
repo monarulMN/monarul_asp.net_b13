@@ -20,7 +20,8 @@ namespace MaleFashion.Application.Features.Categories.Query
             _mapper = mapper;
         }
 
-        public async Task<(IList<Category>, int, int)> Handle(GetAllCategoriesByPagingQuery query, CancellationToken cancellationToken)
+        public async Task<(IList<Category>, int, int)> Handle(GetAllCategoriesByPagingQuery query, 
+            CancellationToken cancellationToken)
         {
             return await _unitOfWork.CategoryRepository.GetPagedCategories(query, cancellationToken);
         }

@@ -14,7 +14,7 @@ namespace MaleFashion.Domain.Entities
         public double? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
         public string? SKU { get; set; }
-        public string MainImageUrl { get; set; } = null!;
+        public string? MainImageUrl { get; set; } 
         public bool IsFeatured { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }

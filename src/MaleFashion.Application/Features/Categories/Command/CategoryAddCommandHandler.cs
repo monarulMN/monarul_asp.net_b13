@@ -22,7 +22,7 @@ namespace MaleFashion.Application.Features.Categories.Command
         }
         public async Task<Category> Handle(CategoryAddCommand command, CancellationToken cancellationToken)
         {
-            var isDuplicateName = await _unitOfWork.CategoryRepository.IsDuplicateCategoryName(command.Name, cancellationToken);
+            var isDuplicateName = await _unitOfWork.CategoryRepository.IsDuplicateCategoryName(command.Name, null, cancellationToken);
 
             if (!isDuplicateName)
             {

@@ -14,13 +14,13 @@ namespace MaleFashion.Infrastructure.Extensions
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureDependency(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureDependency(this IServiceCollection services, string rootPath)
         {
             // Add your infrastructure services here
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
-           // services.AddSingleton<IFileStorageService, FileStorageService>();
-            //services.AddScoped<ISqlUtility, SqlUtility>();
-            //services.AddScoped<IServerTime, ServerTime>();
+            services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
+            //services.AddSingleton<ISqlUtility, SqlUtility>();
+            services.AddSingleton<IServerTime, ServerTime>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();

@@ -27,7 +27,7 @@ try
 
     #region Dependency Injection
 
-    builder.Services.AddInfrastructureDependency();
+    builder.Services.AddInfrastructureDependency(builder.Environment.WebRootPath);
 
     #endregion
     

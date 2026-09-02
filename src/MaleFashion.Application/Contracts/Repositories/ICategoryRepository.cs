@@ -11,6 +11,6 @@ namespace MaleFashion.Application.Contracts.Repositories
     public interface ICategoryRepository : IRepository<Category, Guid>
     {
         Task<(IList<Category>, int, int)> GetPagedCategories(GetAllCategoriesByPagingQuery query, CancellationToken cancellationToken);
-        Task<bool> IsDuplicateCategoryName(string name, CancellationToken cancellationToken);
+        Task<bool> IsDuplicateCategoryName(string name, Guid? id, CancellationToken cancellationToken);
     }
 }
