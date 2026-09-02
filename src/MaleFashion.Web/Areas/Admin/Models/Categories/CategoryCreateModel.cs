@@ -13,7 +13,7 @@ namespace MaleFashion.Web.Areas.Admin.Models.Categories
         public string Description { get; set; } = null!;
 
         [Display(Name = "Picture")]
-        public IFormFile ImageUrl { get; set; } = null!;
+        public IFormFile Image { get; set; } = null!;
         public bool IsActive { get; set; }
     }
 }
