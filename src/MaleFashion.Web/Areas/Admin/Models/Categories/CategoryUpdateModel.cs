@@ -17,7 +17,7 @@ namespace MaleFashion.Web.Areas.Admin.Models.Categories
         [Display(Name ="Picture")]
         public IFormFile? Image { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
 }

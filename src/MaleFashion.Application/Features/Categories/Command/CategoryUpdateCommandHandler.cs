@@ -27,7 +27,7 @@ namespace MaleFashion.Application.Features.Categories.Command
 
             if (!isDuplicateName)
             {
-                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(command.Id, cancellationToken);
+                var category =  _unitOfWork.CategoryRepository.GetById(command.Id);
                 category = _mapper.Map(command, category);
 
 

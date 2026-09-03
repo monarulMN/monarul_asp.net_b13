@@ -9,11 +9,11 @@ namespace MaleFashion.Web.Areas.Admin.Models.Categories
         public string Name { get; set; } = null!;
 
         [Required]
-        [StringLength(500)]
-        public string Description { get; set; } = null!;
+        [StringLength(400)]
+        public string Description { get; set; } 
 
         [Display(Name = "Picture")]
         public IFormFile Image { get; set; } = null!;
-        public bool IsActive { get; set; }
+        
     }
 }

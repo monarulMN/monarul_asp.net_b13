@@ -55,19 +55,22 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    string? imageUrl = null;
+                    string? imageName = null;
                     if(model.Image is not null)
                     {
                         await using var stream = model.Image.OpenReadStream();
 
-                        imageUrl = await _fileStorageService.SaveImageAsync(
+                        imageName = await _fileStorageService.SaveImageAsync(
                             stream,
                             model.Image.FileName,
                             "categories",
                             cancellationToken
                         );
                     }
+
                     var createCommand = _mapper.Map<CategoryAddCommand>(model);
+                    createCommand.ImageUrl = imageName!;
+
                     var result = await _mediator.SendCommandAsync(createCommand);
 
                     TempData.Put(Constants.ResponseTempKey,
@@ -154,7 +157,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(CategoryUpdateModel model, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 try
                 {
@@ -173,14 +176,14 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                         return RedirectToAction(nameof(Index));
                     }
 
-                    var oldImageUrl = category.ImageUrl;
-                    var imageUrl = oldImageUrl;
+                    var oldImageName = category.ImageUrl;
+                    var imageName = oldImageName;
 
                     if(model.Image is not null)
                     {
                         await using var stream = model.Image.OpenReadStream();
 
-                        imageUrl = await _fileStorageService.SaveImageAsync(
+                        imageName = await _fileStorageService.SaveImageAsync(
                             stream,
                             model.Image.FileName,
                             "categories",
@@ -189,17 +192,17 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                     }
 
                     var command = _mapper.Map<CategoryUpdateCommand>(model);
-                    command.ImageUrl = imageUrl;
+                    command.ImageUrl = imageName;
 
                     var result = await _mediator.SendCommandAsync(command, cancellationToken);
 
-                    if(model.Image is not null && !string.IsNullOrEmpty(oldImageUrl) 
-                        && oldImageUrl != imageUrl)
+                    if(model.Image is not null && !string.IsNullOrEmpty(oldImageName) 
+                        && oldImageName != imageName)
                     {
                         try
                         {
                             await _fileStorageService.DeleteImageAsync(
-                                oldImageUrl, 
+                                oldImageName, 
                                 "categories", 
                                 cancellationToken);
                         }
@@ -263,7 +266,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
             {
                 var query = _mapper.Map<GetAllCategoriesByPagingQuery>(model);
                 query.SearchText = model.Search.Value;
-                query.SortText = model.FormatSortExpression("Name", "Name", "Description", "IsActive");
+                query.SortText = model.FormatSortExpression("Name", "Name", "Name", "IsActive");
 
                 var (categories, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCategoriesByPagingQuery, 
                     (IList<Category>, int, int)>(query);
@@ -278,7 +281,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                                 $"/uploads/categories/{HttpUtility.HtmlEncode(categoty.ImageUrl)}",
                                 HttpUtility.HtmlEncode(categoty.Name),
                                 HttpUtility.HtmlEncode(categoty.Description),
-                                categoty.IsActive ? "Active" : "Inactive",
+                                HttpUtility.HtmlEncode(categoty.IsActive ? "Active" : "Inactive"),
                                 categoty.Id.ToString()
                             }).ToArray()
                 };

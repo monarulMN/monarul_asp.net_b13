@@ -31,7 +31,8 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetPagedCustomers([FromBody] CustomerListModel model)
+        public async Task<JsonResult> GetPagedCustomers([FromBody] CustomerListModel model, 
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -39,8 +40,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                 query.SearchText = model.Search.Value;
                 query.SortText = model.FormatSortExpression("FirstName", "PhoneNumber");
 
-                var (users, total, totalDisplay) = await _mediator.SendQueryAsync<GetAllCustomersByPagingQuery,
-                    (IList<User>, int, int)>(query);
+                var (users, total, totalDisplay) = await _mediator.SendQueryAsync(query, cancellationToken);
 
                 var customer = new
                 {
