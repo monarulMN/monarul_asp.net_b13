@@ -20,6 +20,7 @@ namespace MaleFashion.Application.Features.Categories.Command
             _mapper = mapper;
         }
 
+
         public async Task<Category> Handle(CategoryUpdateCommand command, CancellationToken cancellationToken)
         {
             var isDuplicateName = await _unitOfWork.CategoryRepository.IsDuplicateCategoryName(command.Name, 
@@ -35,7 +36,6 @@ namespace MaleFashion.Application.Features.Categories.Command
                 await _unitOfWork.SaveAsync(cancellationToken);
 
                 return category;
-
             }
             else            
                 throw new DuplicateDataException("Category name is duplicate.");

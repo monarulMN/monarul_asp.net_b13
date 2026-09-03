@@ -8,8 +8,8 @@ using System.Text;
 
 namespace MaleFashion.Application.Contracts.Repositories
 {
-    public interface IUserRepository : IRepository<User, Guid>
+    public interface IUserRepository : IRepository<CustomerDto, Guid>
     {
-        Task<(IList<User>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query, CancellationToken cancellationToken);
+        Task<(IList<CustomerDto>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query, CancellationToken cancellationToken);
     }
 }

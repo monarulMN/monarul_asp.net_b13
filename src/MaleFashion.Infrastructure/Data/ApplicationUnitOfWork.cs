@@ -24,6 +24,7 @@ namespace MaleFashion.Infrastructure.Data
         public IWishListRepository WishListRepository { get; private set; }
         public IWishListItemRepository WishListItemRepository { get; private set; }
         public IReviewRepository ReviewRepository { get; private set; }
+        
 
 
         public ApplicationUnitOfWork(ApplicationDbContext dbContext,

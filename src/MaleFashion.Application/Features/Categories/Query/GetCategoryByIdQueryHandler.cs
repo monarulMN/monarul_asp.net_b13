@@ -7,16 +7,16 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.Categories.Query
 {
-    public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, Category?>
+    public class GetCustomerByIdQueryHandler : IQueryHandler<GetCustomerByIdQuery, Category?>
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
 
-        public GetCategoryByIdQueryHandler(IApplicationUnitOfWork unitOfWork)
+        public GetCustomerByIdQueryHandler(IApplicationUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Category?> Handle(GetCategoryByIdQuery query, CancellationToken cancellationToken)
+        public async Task<Category?> Handle(GetCustomerByIdQuery query, CancellationToken cancellationToken)
         {
             return await _unitOfWork.CategoryRepository.GetByIdAsync(query.Id, cancellationToken);
         }

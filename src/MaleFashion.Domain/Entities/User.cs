@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MaleFashion.Domain.Entities
 {
-    public class User : IAggregateRoot<Guid>
+    public class CustomerDto : IAggregateRoot<Guid>
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

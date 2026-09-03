@@ -32,18 +32,16 @@
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Phone Number</label>
                             <input type="text" asp-for="PhoneNumber" class="form-control" />
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">IsActive</label>
-                            <select class="form-control form-control" id="SearchIsActive" name="SearchIsActive">
-                                <option value="">All</option>
-                                <option selected="selected" value="True">Yes</option>
-                                <option value="False">No</option>
-                            </select>
-                        </div>
+                        
                     </div>
 
                     <div class="d-flex justify-content-end gap-2 mt-1">
@@ -55,12 +53,11 @@
                     <partial name="_ModalPartial" />
                     <table id="customers" class="table table-bordered table-hover w-100">
                         <thead>
-                            <tr>
-                                <th>Email</th>
+                            <tr>                               
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Email</th>
                                 <th>Phone Number</th>
-                                <th>Active</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -115,21 +112,43 @@
                         targets: -1,
                         render: function(data, type, row){
                             return `
-                                <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" >
-                                    Actions
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item text-info" href="">View</a></li>
-                                    <li><a class="dropdown-item text-warning" href="">Edit</a></li>
-                                    <li><button class="dropdown-item text-danger" data-id="${data}">Delete</button></li>
-                                </ul>
-                            `;
+                                  <div class="dropdown">
+                                      <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" >
+                                           Actions
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          <li><a class="dropdown-item text-warning" href="/admin/customers/update/${data}">Edit</a></li>
+                                          <li><button class="dropdown-item text-danger show-bs-modal" data-id="${data}">Delete</button></li>
+                                      </ul>
+                                 </div>
+                             `;
                         }
                     }
                 ]               
                 
             });
+            $("#customers").on('click', '.show-bs-modal', function(){
+                let id = $(this).data('id');
+                let deleteModal = $("#delete-modal");
+                deleteModal.find('#modalLabel').text("Delete Customer");
+                deleteModal.find('.modal-body p').html("Are you sure you want to delete this customer?");
+                $('#delete-id').val(id);
+                $('#delete-form').attr('action', '/admin/customers/delete');
+                deleteModal.modal('show');
+             });
+
+             $('#delete-btn').on('click', function(){
+                $('#delete-form').submit();
+              });
+
+             $("#searchButton").click(function(){
+                $("#customers").DataTable().ajax.reload(null, false);
+             });
+
+             $("#resetButton").click(function(){
+                 $("#Name").val('');
+                 $("#customers").DataTable().ajax.reload(null, false);
+             });       
         });
         
     </script>

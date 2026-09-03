@@ -104,7 +104,7 @@ namespace MaleFashion.Web.Controllers
                 }
             }
 
-            return View(model);
+            return RedirectToAction(nameof(ConfirmEmail));
         }
 
         

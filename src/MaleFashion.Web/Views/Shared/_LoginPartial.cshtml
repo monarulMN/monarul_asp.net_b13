@@ -4,11 +4,12 @@
 @inject UserManager<ApplicationUser> UserManager
 
 
-<div class="header__top__links">
+ <div class="header__top__links">
     @if (SignInManager.IsSignedIn(User))
     {
-        @* <a asp-area="Admin" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity?.Name!</a> *@
+         @* <a asp-area="Admin" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity?.Name!</a> *@
         <div class="header__top__hover">
+
             <span>
                 <a href="#" class="account-icon " ><i class="fa fa-user"></i> </a>
             </span>
@@ -16,7 +17,7 @@
                 <form class="form-inline" asp-area="" asp-controller="Account" asp-action="ChangePassword">
                     <button type="submit" class="btn btn-link ">ChangePassword</button>
                 </form>
-                @* <input asp-area="" asp-controller="Account" asp-action="ChangePassword" class="btn btn-link" value="ChangePassword"/> *@
+                
 
                 <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
                       asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -32,5 +33,4 @@
         <a asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
     }
 </div>
-
 

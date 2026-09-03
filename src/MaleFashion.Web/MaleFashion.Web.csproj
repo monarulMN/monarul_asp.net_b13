@@ -27,8 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Customer\Data\" />
-    <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Logs\" />
     <Folder Include="wwwroot\uploads\categories\" />
   </ItemGroup>

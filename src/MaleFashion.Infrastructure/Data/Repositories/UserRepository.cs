@@ -8,13 +8,13 @@ using System.Text;
 
 namespace MaleFashion.Infrastructure.Data.Repositories
 {
-    public class UserRepository : Repository<User, Guid>, IUserRepository
+    public class UserRepository : Repository<CustomerDto, Guid>, IUserRepository
     {
         public UserRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<(IList<User>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query,
+        public async Task<(IList<CustomerDto>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query,
             CancellationToken cancellationToken)
         {
             return await GetDynamicAsync(x => query.SearchText == null || x.FirstName.Contains(query.SearchText),

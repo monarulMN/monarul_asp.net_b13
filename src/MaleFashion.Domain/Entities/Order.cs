@@ -10,7 +10,7 @@ namespace MaleFashion.Domain.Entities
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public CustomerDto User { get; set; }
 
         public string OrderNumber { get; set; }
         public double SubTotal { get; set; }

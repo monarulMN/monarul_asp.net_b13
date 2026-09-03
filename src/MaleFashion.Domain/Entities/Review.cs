@@ -13,7 +13,7 @@ namespace MaleFashion.Domain.Entities
         public Product Product { get; set; }
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public CustomerDto User { get; set; }
 
         public int Rating { get; set; }
         public string Comment { get; set; }

@@ -18,9 +18,6 @@ namespace MaleFashion.Infrastructure.Extensions
         {
             // Add your infrastructure services here
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
-            services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
-            //services.AddSingleton<ISqlUtility, SqlUtility>();
-            services.AddSingleton<IServerTime, ServerTime>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
@@ -38,6 +35,12 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<IReviewRepository, ReviewRepository>();
 
             services.AddScoped<IEmailService, EmailService>();
+            services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
+            //services.AddSingleton<ISqlUtility, SqlUtility>();
+            services.AddSingleton<IServerTime, ServerTime>();
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 
             // For example, you can add database context, repositories, etc.
             return services;
