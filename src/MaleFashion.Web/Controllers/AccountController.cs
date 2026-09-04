@@ -2,6 +2,8 @@
 using MaleFashion.Domain.Entities;
 using MaleFashion.Infrastructure.Extensions;
 using MaleFashion.Infrastructure.Identity;
+using MaleFashion.Web.Areas.Admin.Models;
+using MaleFashion.Web.Codes;
 using MaleFashion.Web.Models.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -110,22 +112,39 @@ namespace MaleFashion.Web.Controllers
         
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
+            try
             {
-                TempData["message"] = " UserId or Code is null!";
+                if (userId == null || code == null)
+                {
+                    TempData["message"] = " UserId or Code is null!";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{userId}'.");
+                }
+
+                var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
+
+            }
+            catch(Exception ex)
+            {
+                const string message = "Failed to confirm email.";
+
+                _logger.LogError(ex, message);
+
+                TempData.Put(Constants.ResponseTempKey,
+                    new ResponseModel
+                    {
+                        Message = message,
+                        Type = ResponseTypes.Danger
+                    });
+
                 return RedirectToAction(nameof(Index));
             }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
-
-            var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
-
-            TempData["message"] = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
 
             return View();
         }

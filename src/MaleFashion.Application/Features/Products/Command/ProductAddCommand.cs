@@ -10,15 +10,15 @@ namespace MaleFashion.Application.Features.Products.Command
     public class ProductAddCommand : ICommand<Product>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string Name { get; set; } 
+        public string Description { get; set; } 
         public double Price { get; set; }
         public double? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
         public string? SKU { get; set; }
-        //public string MainImageUrl { get; set; } = null!;
-        //public bool IsFeatured { get; set; }
-        //public bool IsActive { get; set; }
-        //public DateTime CreatedDate { get; set; }
+        public string? MainImageUrl { get; set; } 
+        public bool IsFeatured { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

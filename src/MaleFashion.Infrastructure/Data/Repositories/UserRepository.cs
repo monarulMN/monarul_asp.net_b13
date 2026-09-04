@@ -14,16 +14,6 @@ namespace MaleFashion.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<(IList<CustomerDto>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query,
-            CancellationToken cancellationToken)
-        {
-            return await GetDynamicAsync(x => query.SearchText == null || x.FirstName.Contains(query.SearchText),
-                query.SortText,
-                null,
-                query.PageIndex,
-                query.PageSize,
-                true,
-                cancellationToken);
-        }
+        
     }
 }

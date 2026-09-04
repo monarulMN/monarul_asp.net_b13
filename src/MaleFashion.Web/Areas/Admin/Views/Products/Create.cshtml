@@ -12,6 +12,17 @@
                     <partial name="_ResponsePartial" />
                     <form asp-area="admin" asp-controller="products" asp-action="create" asp-antiforgery="true"
                           enctype="multipart/form-data" method="post">
+
+                        <div class="row">
+                             <div class="col-md-6 mb-4">
+                                <label class="form-label" asp-for="CategoryId">Category</label>
+                                <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories">
+                                    <option value="">Select a category</option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                             </div>
+                        </div>
+
                         <div class="row ">
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" asp-for="Name">Name</label>

@@ -60,7 +60,6 @@ namespace MaleFashion.Infrastructure.Data.Repositories
             int totalCount = await user.CountAsync(cancellationToken);
 
             var users = await user
-                .Skip((query.PageIndex - 1) * query.PageSize)
                 .Take(query.PageSize)
                 .Select(u => _mapper.Map<UserDto>(u))
                 .ToListAsync(cancellationToken);

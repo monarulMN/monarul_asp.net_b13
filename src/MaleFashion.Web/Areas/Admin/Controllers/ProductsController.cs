@@ -1,16 +1,19 @@
 ﻿using Cortex.Mediator;
 using MaleFashion.Application.Contracts;
 using MaleFashion.Application.Exceptions;
+using MaleFashion.Application.Features.Categories.Command;
 using MaleFashion.Application.Features.Products.Command;
 using MaleFashion.Application.Features.Products.Query;
 using MaleFashion.Domain.Entities;
 using MaleFashion.Domain.Utilities;
 using MaleFashion.Infrastructure.Extensions;
 using MaleFashion.Web.Areas.Admin.Models;
+using MaleFashion.Web.Areas.Admin.Models.Categories;
 using MaleFashion.Web.Areas.Admin.Models.Products;
 using MaleFashion.Web.Codes;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 
 namespace MaleFashion.Web.Areas.Admin.Controllers
@@ -19,13 +22,17 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly ILogger<ProductsController> _logger;
+        private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public ProductsController(ILogger<ProductsController> logger, 
-            IMapper mapper, IMediator mediator)
+            IApplicationUnitOfWork unitOfWork,
+            IMapper mapper, 
+            IMediator mediator)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediator = mediator;
         }
@@ -36,44 +43,53 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
             var model = new ProductCreateModel();
+
+            var categories =  await _unitOfWork.CategoryRepository.GetAllAsync(cancellationToken);
+            model.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
             return View(model);
         }
 
+
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductCreateModel model)
+        public async Task<IActionResult> Create(ProductCreateModel model, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var command = _mapper.Map<ProductAddCommand>(model);
-                    var result = await _mediator.SendCommandAsync(command);
+                    var createCommand = _mapper.Map<ProductAddCommand>(model);
+
+                    var result = await _mediator.SendCommandAsync(createCommand);
 
                     TempData.Put(Constants.ResponseTempKey,
                         new ResponseModel
                         {
-                            Message = "Product Successfully created.",
+                            Message = "Product created successfully!",
                             Type = ResponseTypes.Success
                         });
 
                     return RedirectToAction(nameof(Index));
-
                 }
                 catch (DuplicateDataException oex)
                 {
                     TempData.Put(Constants.ResponseTempKey,
                         new ResponseModel
                         {
-                            Message = oex.Message,
+                            Message = "Product already exists!",
                             Type = ResponseTypes.Danger
                         });
                 }
                 catch (Exception ex)
                 {
-                    const string errorMessage = "Failed to create product.";
+                    const string errorMessage = "Failed to create Product!";
 
                     _logger.LogError(ex, errorMessage);
 
@@ -83,19 +99,21 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                             Message = errorMessage,
                             Type = ResponseTypes.Danger
                         });
+
+                    return View(model);
                 }
             }
             else
             {
                 TempData.Put(Constants.ResponseTempKey,
-                     new ResponseModel
-                     {
-                         Message = "Please provide all information.",
-                         Type = ResponseTypes.Success
-                     });
+                    new ResponseModel
+                    {
+                        Message = "Please provide all information.",
+                        Type = ResponseTypes.Danger
+                    });
             }
-
             return View(model);
+
         }
 
 

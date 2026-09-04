@@ -10,6 +10,6 @@ namespace MaleFashion.Application.Contracts.Repositories
 {
     public interface IUserRepository : IRepository<CustomerDto, Guid>
     {
-        Task<(IList<CustomerDto>, int, int)> GetPagedCustomers(GetAllCustomersByPagingQuery query, CancellationToken cancellationToken);
+        
     }
 }

@@ -23,10 +23,12 @@ namespace MaleFashion.Application.Features.Products.Command
         public async Task<Product> Handle(ProductAddCommand command, CancellationToken cancellationToken)
         {
             var isDuplicateName = await _unitOfWork.ProductRepository.IsDuplicateProductName(command.Name, cancellationToken);
+
             if (!isDuplicateName)
             {
                 var product = _mapper.Map<Product>(command);
                 product.Id = IdentityGenerator.NewSequentialGuid();
+                
 
                 await _unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
                 await _unitOfWork.SaveAsync(cancellationToken);
