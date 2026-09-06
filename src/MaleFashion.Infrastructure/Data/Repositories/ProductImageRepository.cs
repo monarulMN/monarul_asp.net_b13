@@ -14,10 +14,17 @@ namespace MaleFashion.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<(IList<ProductImage>, int, int)> GetPagedProductImages(GetAllProductImageByPagingQuery query, 
-            CancellationToken cancellationToken)
+        public async Task<IList<ProductImage>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken)
         {
-            return await 
+            return await _dbSet
+                .Where(i => i.ProductId == productId)
+                .OrderBy(i => i.DisplayOrder)
+                .ToListAsync(cancellationToken);
+        }
+
+        public Task IsDuplicateProductImage(Guid productId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

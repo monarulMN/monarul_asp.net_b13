@@ -13,7 +13,7 @@ namespace MaleFashion.Application.Features.ProductImages.Command
         public Guid Id { get; set; }
         public string ImageUrl { get; set; }
         public bool IsPrimary { get; set; }
-        public int DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; } = 0;
 
         public Guid ProductId { get; set; }
         

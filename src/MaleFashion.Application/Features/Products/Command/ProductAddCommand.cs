@@ -14,7 +14,7 @@ namespace MaleFashion.Application.Features.Products.Command
         public string Description { get; set; } 
         public double Price { get; set; }
         public double? DiscountPrice { get; set; }
-        public int StockQuantity { get; set; }
+        public int StockQuantity { get; set; } = 0;
         public string? SKU { get; set; }
         public string? MainImageUrl { get; set; } 
         public bool IsFeatured { get; set; }

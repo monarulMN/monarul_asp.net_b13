@@ -125,7 +125,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         {
             try
             {
-                var query = new GetCustomerByIdQuery { Id = id };
+                var query = new GetCategoryByIdQuery { Id = id };
                 var category = await _mediator.SendQueryAsync(query);
 
                 if (category is not null)
@@ -161,7 +161,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    var query = new GetCustomerByIdQuery { Id = model.Id };
+                    var query = new GetCategoryByIdQuery { Id = model.Id };
                     var category = await _mediator.SendQueryAsync(query,cancellationToken);
 
                     if (category is null)
@@ -300,7 +300,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         {
             try
             {
-                var deleteCommand = new CustomerDeleteCommand { Id = id };
+                var deleteCommand = new CategoryDeleteCommand { Id = id };
                 await _mediator.SendCommandAsync(deleteCommand);
 
                 TempData.Put(Constants.ResponseTempKey,

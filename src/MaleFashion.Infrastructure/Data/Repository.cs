@@ -14,8 +14,8 @@ namespace MaleFashion.Infrastructure.Data
         where TAggregateRoot : class, IAggregateRoot<TKey>
         where TKey : IComparable
     {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<TAggregateRoot> _dbSet;
+        protected readonly DbContext _dbContext;
+        protected readonly DbSet<TAggregateRoot> _dbSet;
 
         public Repository(DbContext dbContext)
         {

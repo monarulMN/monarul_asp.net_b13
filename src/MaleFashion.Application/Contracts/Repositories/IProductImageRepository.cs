@@ -9,7 +9,7 @@ namespace MaleFashion.Application.Contracts.Repositories
 {
     public interface IProductImageRepository : IRepository<ProductImage, Guid>
     {
-        Task<(IList<ProductImage>, int, int)> GetPagedProductImages(GetAllProductImageByPagingQuery query,
-            CancellationToken cancellationToken);
+        Task<IList<ProductImage>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken);
+        Task IsDuplicateProductImage(Guid productId, CancellationToken cancellationToken);
     }
 }

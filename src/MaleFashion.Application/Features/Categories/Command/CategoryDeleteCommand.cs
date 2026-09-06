@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.Categories.Command
 {
-    public class CustomerDeleteCommand : ICommand
+    public class CategoryDeleteCommand : ICommand
     {
         public Guid Id { get; set; }
     }

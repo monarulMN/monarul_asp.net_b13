@@ -7,11 +7,9 @@ using System.Windows.Input;
 
 namespace MaleFashion.Application.Features.ProductImages.Query
 {
-    public class GetAllProductImageByPagingQuery : IQuery<(IList<ProductImage>, int, int)>
+    public class GetAllProductImageByPagingQuery : IQuery<IList<ProductImage>>
     {
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-        public string SearchText { get; set; }
-        public string SortText { get; set; }
+        public Guid ProductId { get; set; }
+       
     }
 }

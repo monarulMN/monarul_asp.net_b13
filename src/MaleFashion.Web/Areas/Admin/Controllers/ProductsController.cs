@@ -116,6 +116,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
 
         }
 
+        
 
         [HttpPost]
         public async Task<JsonResult> GetPagedProducts([FromBody] ProductListModel model)
@@ -150,6 +151,40 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
                 _logger.LogError(ex, "Falied to get Product list ");
                 return Json(DataTables.EmptyResult);
             }
+        }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var deleteCommand = new ProductDeleteCommand { Id = id };
+                await _mediator.SendCommandAsync(deleteCommand);
+
+                TempData.Put(Constants.ResponseTempKey,
+                    new ResponseModel
+                    {
+                        Message = "Category deleted successfully!",
+                        Type = ResponseTypes.Success
+                    });
+
+            }
+            catch (Exception ex)
+            {
+                const string errorMessage = "Failed to delete category!";
+
+                _logger.LogError(ex, errorMessage);
+
+                TempData.Put(Constants.ResponseTempKey,
+                    new ResponseModel
+                    {
+                        Message = errorMessage,
+                        Type = ResponseTypes.Danger
+                    });
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

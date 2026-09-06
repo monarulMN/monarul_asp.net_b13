@@ -27,6 +27,7 @@ namespace MaleFashion.Infrastructure.Data.Repositories
                 cancellationToken);
         }
 
+
         public async Task<bool> IsDuplicateCategoryName(string name, Guid? id, CancellationToken cancellationToken)
         {
             if(!id.HasValue)

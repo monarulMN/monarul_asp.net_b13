@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.Categories.Query
 {
-    public class GetCustomerByIdQuery : IQuery<Category?>
+    public class GetCategoryByIdQuery : IQuery<Category?>
     {
         public Guid Id { get; set; }
     }

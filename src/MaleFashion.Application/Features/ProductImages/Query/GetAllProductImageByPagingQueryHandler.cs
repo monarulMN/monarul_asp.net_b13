@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.ProductImages.Query
 {
-    internal class GetAllProductImageByPagingQueryHandler : IQueryHandler<GetAllProductImageByPagingQuery, (IList<ProductImage>, int, int)>
+    internal class GetAllProductImageByPagingQueryHandler : IQueryHandler<GetAllProductImageByPagingQuery, IList<ProductImage>>
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
 
@@ -16,9 +16,9 @@ namespace MaleFashion.Application.Features.ProductImages.Query
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(IList<ProductImage>, int, int)> Handle(GetAllProductImageByPagingQuery query, CancellationToken cancellationToken)
+        public async Task<IList<ProductImage>> Handle(GetAllProductImageByPagingQuery query, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.ProductImageRepository.GetPagedProductImages(query, cancellationToken);
+            return await _unitOfWork.ProductImageRepository.GetByProductIdAsync(query.ProductId, cancellationToken);
         }
     }
 }

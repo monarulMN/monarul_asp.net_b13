@@ -7,16 +7,16 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.Categories.Command
 {
-    public class CustomerDeleteCommandHandler : ICommandHandler<CustomerDeleteCommand>
+    public class CategoryDeleteCommandHandler : ICommandHandler<CategoryDeleteCommand>
     {
         private readonly IApplicationUnitOfWork _unitOfWork;
 
-        public CustomerDeleteCommandHandler(IApplicationUnitOfWork unitOfWork)
+        public CategoryDeleteCommandHandler(IApplicationUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(CustomerDeleteCommand command, CancellationToken cancellationToken)
+        public async Task Handle(CategoryDeleteCommand command, CancellationToken cancellationToken)
         {
             await _unitOfWork.CategoryRepository.RemoveAsync(command.Id, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);

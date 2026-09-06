@@ -22,7 +22,12 @@ namespace MaleFashion.Application.Features.ProductImages.Command
 
         public async Task<ProductImage> Handle(ProductImageAddCommand command, CancellationToken cancellationToken)
         {
-            var productImage = _mapper.Map<ProductImage>(command);
+            var product = await _unitOfWork.ProductRepository.GetByIdAsync(command.ProductId, cancellationToken);
+
+            if (product == null)
+                throw new InvalidOperationException($"Product was not found!");
+
+            var productImage = _mapper.Map<ProductImage>(product);
             productImage.Id = IdentityGenerator.NewSequentialGuid();
 
             await _unitOfWork.ProductImageRepository.AddAsync(productImage, cancellationToken);
