@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace MaleFashion.Web.Areas.Admin.Controllers
 {
@@ -9,5 +12,6 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         {
             return View();
         }
+                
     }
 }

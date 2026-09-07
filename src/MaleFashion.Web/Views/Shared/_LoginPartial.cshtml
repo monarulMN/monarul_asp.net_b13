@@ -7,21 +7,28 @@
  <div class="header__top__links">
     @if (SignInManager.IsSignedIn(User))
     {
-         @* <a asp-area="Admin" asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.Identity?.Name!</a> *@
+        @* <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" title="Manage">Hello @User.Identity?.Name!</a> *@
+        
         <div class="header__top__hover">
 
             <span>
-                <a href="#" class="account-icon " ><i class="fa fa-user"></i> </a>
+                <a href="#" class="account-icon "><i class="fa fa-user"></i> </a>
             </span>
             <ul>
                 <form class="form-inline" asp-area="" asp-controller="Account" asp-action="ChangePassword">
-                    <button type="submit" class="btn btn-link ">ChangePassword</button>
+                    <button type="submit" class="btn btn-link ">
+                        <i class="bx bx-lock-alt me-2"></i>
+                        ChangePassword
+                    </button>
                 </form>
-                
 
+                
                 <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
                       asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="btn btn-link ">Logout</button>
+                    <button type="submit" class="btn btn-link ">
+                        <i class="bx bx-power-off me-2"></i>
+                        Logout
+                    </button>
                 </form>
             </ul>
         </div>

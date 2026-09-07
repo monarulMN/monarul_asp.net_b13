@@ -120,6 +120,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
 
         [HttpPost]
         public async Task<JsonResult> GetPagedProducts([FromBody] ProductListModel model)
+        
         {
             try
             {

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Identity.Client.NativeInterop;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
@@ -41,7 +42,7 @@ namespace MaleFashion.Web.Controllers
             _emailService = emailService;
         }
 
-
+       
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
             var model = new RegisterModel();
@@ -73,7 +74,7 @@ namespace MaleFashion.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, "Member");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -106,7 +107,7 @@ namespace MaleFashion.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(ConfirmEmail));
+            return RedirectToAction(nameof(Login));
         }
 
         
@@ -117,7 +118,7 @@ namespace MaleFashion.Web.Controllers
                 if (userId == null || code == null)
                 {
                     TempData["message"] = " UserId or Code is null!";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Home");
                 }
 
                 var user = await _userManager.FindByIdAsync(userId);
@@ -143,10 +144,10 @@ namespace MaleFashion.Web.Controllers
                         Type = ResponseTypes.Danger
                     });
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Register));
             }
 
-            return View();
+            return RedirectToAction(nameof(Login));
         }
 
 
@@ -215,7 +216,7 @@ namespace MaleFashion.Web.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -390,7 +391,7 @@ namespace MaleFashion.Web.Controllers
         }
 
 
-        private ApplicationUser CreateUser()
+        protected ApplicationUser CreateUser()
         {
             try
             {

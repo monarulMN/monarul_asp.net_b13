@@ -10,6 +10,6 @@ namespace MaleFashion.Application.Contracts.Repositories
     public interface IProductImageRepository : IRepository<ProductImage, Guid>
     {
         Task<IList<ProductImage>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken);
-        Task IsDuplicateProductImage(Guid productId, CancellationToken cancellationToken);
+        
     }
 }

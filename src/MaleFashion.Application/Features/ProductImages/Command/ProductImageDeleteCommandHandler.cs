@@ -18,7 +18,6 @@ namespace MaleFashion.Application.Features.ProductImages.Command
         {
             await _unitOfWork.ProductImageRepository.RemoveAsync(command.Id, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
-
         }
     }
 }

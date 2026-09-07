@@ -22,9 +22,6 @@ namespace MaleFashion.Infrastructure.Data.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public Task IsDuplicateProductImage(Guid productId, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -130,6 +130,39 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.ToTable("Colors");
                 });
 
+            modelBuilder.Entity("MaleFashion.Domain.Entities.CustomerDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("MaleFashion.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -265,7 +298,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MainImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -414,39 +446,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.ToTable("Sizes");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishList", b =>
                 {
                     b.Property<Guid>("Id")
@@ -517,6 +516,22 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            ConcurrencyStamp = "20C74340-B876-412C-81D3-A323469C54B1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            ConcurrencyStamp = "0C683DB0-F13D-45D3-B151-FCFD879C1381",
+                            Name = "Member",
+                            NormalizedName = "MEMBER"
+                        });
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRoleClaim", b =>
@@ -699,7 +714,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Cart", b =>
                 {
-                    b.HasOne("MaleFashion.Domain.Entities.User", "User")
+                    b.HasOne("MaleFashion.Domain.Entities.CustomerDto", "User")
                         .WithOne("Cart")
                         .HasForeignKey("MaleFashion.Domain.Entities.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -741,7 +756,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("MaleFashion.Domain.Entities.User", "User")
+                    b.HasOne("MaleFashion.Domain.Entities.CustomerDto", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -837,7 +852,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MaleFashion.Domain.Entities.User", "User")
+                    b.HasOne("MaleFashion.Domain.Entities.CustomerDto", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -850,7 +865,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishList", b =>
                 {
-                    b.HasOne("MaleFashion.Domain.Entities.User", "User")
+                    b.HasOne("MaleFashion.Domain.Entities.CustomerDto", "User")
                         .WithOne("WishList")
                         .HasForeignKey("MaleFashion.Domain.Entities.WishList", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -944,6 +959,17 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("ProductColors");
                 });
 
+            modelBuilder.Entity("MaleFashion.Domain.Entities.CustomerDto", b =>
+                {
+                    b.Navigation("Cart");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WishList");
+                });
+
             modelBuilder.Entity("MaleFashion.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
@@ -969,17 +995,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
             modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
                 {
                     b.Navigation("ProductSizes");
-                });
-
-            modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Cart");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Reviews");
-
-                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.WishList", b =>

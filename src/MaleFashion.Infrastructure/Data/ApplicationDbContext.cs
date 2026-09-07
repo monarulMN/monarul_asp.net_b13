@@ -2,6 +2,7 @@
 using MaleFashion.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MaleFashion.Infrastructure.Data;
 
 namespace MaleFashion.Infrastructure.Data
 {
@@ -154,6 +155,8 @@ namespace MaleFashion.Infrastructure.Data
                       .WithMany(x => x.Reviews)
                       .HasForeignKey(x => x.UserId);
             });
+
+            modelBuilder.Entity<ApplicationRole>().HasData(Seeds.RoleSeeds.GetRoles());
 
         }
     }
