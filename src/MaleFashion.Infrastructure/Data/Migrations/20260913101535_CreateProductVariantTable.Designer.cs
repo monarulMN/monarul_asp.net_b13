@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaleFashion.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260828204204_CreateUserTable")]
-    partial class CreateUserTable
+    [Migration("20260913101535_CreateProductVariantTable")]
+    partial class CreateProductVariantTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -52,25 +52,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("MaleFashion.Domain.Entities.Color", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("HexCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
@@ -122,30 +103,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductColor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ColorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("StockQuantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductColors");
-                });
-
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductImage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -172,65 +129,31 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductSize", b =>
+            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductVariant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SizeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StockQuantity")
+                    b.Property<int>("StcokQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("SizeId");
-
-                    b.ToTable("ProductSizes");
-                });
-
-            modelBuilder.Entity("MaleFashion.Domain.Entities.Size", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sizes");
-                });
-
-            modelBuilder.Entity("MaleFashion.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRole", b =>
@@ -450,25 +373,6 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductColor", b =>
-                {
-                    b.HasOne("MaleFashion.Domain.Entities.Color", "Color")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MaleFashion.Domain.Entities.Product", "Product")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductImage", b =>
                 {
                     b.HasOne("MaleFashion.Domain.Entities.Product", "Product")
@@ -480,23 +384,15 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductSize", b =>
+            modelBuilder.Entity("MaleFashion.Domain.Entities.ProductVariant", b =>
                 {
                     b.HasOne("MaleFashion.Domain.Entities.Product", "Product")
-                        .WithMany("ProductSizes")
+                        .WithMany("ProductVariants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MaleFashion.Domain.Entities.Size", "Size")
-                        .WithMany()
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRoleClaim", b =>
@@ -555,18 +451,11 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("MaleFashion.Domain.Entities.Color", b =>
-                {
-                    b.Navigation("ProductColors");
-                });
-
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("ProductColors");
-
                     b.Navigation("ProductImages");
 
-                    b.Navigation("ProductSizes");
+                    b.Navigation("ProductVariants");
                 });
 #pragma warning restore 612, 618
         }

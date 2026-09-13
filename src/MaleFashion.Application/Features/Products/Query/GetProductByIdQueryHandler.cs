@@ -15,6 +15,7 @@ namespace MaleFashion.Application.Features.Products.Query
         {
             _unitOfWork = unitOfWork;
         }
+
         public async Task<Product?> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
         {
             return await _unitOfWork.ProductRepository.GetByIdAsync(query.Id, cancellationToken);

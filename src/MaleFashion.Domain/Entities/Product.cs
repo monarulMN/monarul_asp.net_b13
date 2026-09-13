@@ -14,7 +14,7 @@ namespace MaleFashion.Domain.Entities
         public double? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
         public string? SKU { get; set; }
-        public string? MainImageUrl { get; set; } 
+        public string MainImageUrl { get; set; } = null!;
         public bool IsFeatured { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -25,23 +25,20 @@ namespace MaleFashion.Domain.Entities
         public ICollection<ProductImage> ProductImages { get; set; }
             = new List<ProductImage>();
 
-        public ICollection<ProductSize> ProductSizes { get; set; }
-            = new List<ProductSize>();
+        public ICollection<ProductVariant> ProductVariants { get; set; }
+            = new List<ProductVariant>();
 
-        public ICollection<ProductColor> ProductColors { get; set; }
-            = new List<ProductColor>();
+        //public ICollection<CartItem> CartItems { get; set; }
+        //    = new List<CartItem>();
 
-        public ICollection<CartItem> CartItems { get; set; }
-            = new List<CartItem>();
+        //public ICollection<OrderItem> OrderItems { get; set; }
+        //    = new List<OrderItem>();
 
-        public ICollection<OrderItem> OrderItems { get; set; }
-            = new List<OrderItem>();
+        //public ICollection<WishListItem> WishlistItems { get; set; }
+        //    = new List<WishListItem>();
 
-        public ICollection<WishListItem> WishlistItems { get; set; }
-            = new List<WishListItem>();
-
-        public ICollection<Review> Reviews { get; set; }
-            = new List<Review>();
+        //public ICollection<Review> Reviews { get; set; }
+        //    = new List<Review>();
 
     }
 }

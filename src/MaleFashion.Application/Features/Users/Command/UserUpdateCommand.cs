@@ -1,12 +1,12 @@
 ﻿using Cortex.Mediator.Commands;
-using MaleFashion.Domain.DTOs;
+using MaleFashion.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaleFashion.Application.Features.Customers.Command
+namespace MaleFashion.Application.Features.Users.Command
 {
-    public class CustomerUpdateCommand : ICommand
+    public class UserUpdateCommand : ICommand
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

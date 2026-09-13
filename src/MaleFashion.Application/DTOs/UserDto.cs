@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace MaleFashion.Domain.DTOs
+namespace MaleFashion.Application.DTOs
 {
     public class UserDto
     {

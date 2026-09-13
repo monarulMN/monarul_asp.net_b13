@@ -9,5 +9,6 @@ namespace MaleFashion.Application.Features.Products.Query
     public class GetProductByIdQuery : IQuery<Product?>
     {
         public Guid Id { get; set; }
+        public Guid CategoryId { get; set; }
     }
 }

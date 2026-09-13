@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace MaleFashion.Application.Features.Customers.Command
+namespace MaleFashion.Application.Features.Users.Command
 {
-    public class CustomerDeleteCommand : ICommand
+    public class UserDeleteCommand : ICommand
     {
         public Guid Id { get; set; }
     }

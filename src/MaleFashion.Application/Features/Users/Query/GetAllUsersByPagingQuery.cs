@@ -1,12 +1,13 @@
 ﻿using Cortex.Mediator.Queries;
+using MaleFashion.Application.DTOs;
 using MaleFashion.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MaleFashion.Application.Features.Colors.Query
+namespace MaleFashion.Application.Features.Users.Query
 {
-    public class GetAllColorByPagingQuery : IQuery<(IList<Color>, int, int)>
+    public class GetAllUsersByPagingQuery : IQuery<(IList<UserDto>, int, int)>
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }

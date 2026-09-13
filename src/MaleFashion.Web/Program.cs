@@ -10,7 +10,6 @@ using MaleFashion.Application.Features.Products.Command;
 
 
 
-
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/web-log-.log", rollingInterval: RollingInterval.Day)
     .CreateBootstrapLogger();

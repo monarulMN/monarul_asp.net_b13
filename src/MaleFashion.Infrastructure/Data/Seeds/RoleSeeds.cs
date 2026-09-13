@@ -22,7 +22,7 @@ namespace MaleFashion.Infrastructure.Data.Seeds
                     NormalizedName = "MEMBER",
                     ConcurrencyStamp ="0C683DB0-F13D-45D3-B151-FCFD879C1381"
                 }
-                
+
             };
         }
     }

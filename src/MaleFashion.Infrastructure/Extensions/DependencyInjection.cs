@@ -21,25 +21,23 @@ namespace MaleFashion.Infrastructure.Extensions
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
-            services.AddScoped<ISizeRepository, SizeRepository>();
-            services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
-            services.AddScoped<IColorRepository, ColorRepository>();
-            services.AddScoped<IProductColorRepository, ProductColorRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ICartRepository, CartRepository>();
-            services.AddScoped<ICartItemRepository, CartItemRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IWishListRepository, WishListRepository>();
-            services.AddScoped<IWishListItemRepository, WishListItemRepository>();
-            services.AddScoped<IReviewRepository, ReviewRepository>();
+            //services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+
+            //services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<ICartRepository, CartRepository>();
+            //services.AddScoped<ICartItemRepository, CartItemRepository>();
+            //services.AddScoped<IOrderRepository, OrderRepository>();
+            //services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            //services.AddScoped<IWishListRepository, WishListRepository>();
+            //services.AddScoped<IWishListItemRepository, WishListItemRepository>();
+            //services.AddScoped<IReviewRepository, ReviewRepository>();
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
             //services.AddSingleton<ISqlUtility, SqlUtility>();
             services.AddSingleton<IServerTime, ServerTime>();
 
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
             // For example, you can add database context, repositories, etc.

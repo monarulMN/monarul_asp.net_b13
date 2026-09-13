@@ -384,7 +384,9 @@ namespace MaleFashion.Web.Controllers
             }
 
             await _signInManager.RefreshSignInAsync(user);
+
             _logger.LogInformation("User changed their password successfully.");
+
             var statusMessage = "Your password has been changed.";
 
             return RedirectToAction(nameof(Login));

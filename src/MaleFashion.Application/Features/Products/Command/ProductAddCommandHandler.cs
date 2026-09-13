@@ -20,6 +20,7 @@ namespace MaleFashion.Application.Features.Products.Command
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         public async Task<Product> Handle(ProductAddCommand command, CancellationToken cancellationToken)
         {
             var isDuplicateName = await _unitOfWork.ProductRepository.IsDuplicateProductName(command.Name, cancellationToken);

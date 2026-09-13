@@ -7,9 +7,9 @@ using System.Text;
 
 namespace MaleFashion.Infrastructure.Data.Repositories
 {
-    public class ProductSizeRepository : Repository<ProductSize, Guid>, IProductSizeRepository
+    public class ProductVariantRepository : Repository<ProductVariant, Guid>, IProductVariantRepository
     {
-        public ProductSizeRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public ProductVariantRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Cortex.Mediator;
-using MaleFashion.Application.Features.Customers.Command;
-using MaleFashion.Application.Features.Customers.Query;
+using MaleFashion.Application.Features.Users.Command;
+using MaleFashion.Application.Features.Users.Query;
 using MaleFashion.Domain.Entities;
 using MaleFashion.Domain.Utilities;
 using MaleFashion.Infrastructure.Extensions;
@@ -47,7 +47,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         {
             try
             {
-                var query = new GetCustomerByIdQuery { Id = id };
+                var query = new GetUserByIdQuery { Id = id };
                 var user = await _mediator.SendQueryAsync(query, cancellationToken);
 
                 if (user == null)
@@ -93,7 +93,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    var command = _mapper.Map<CustomerUpdateCommand>(model);
+                    var command = _mapper.Map<UserUpdateCommand>(model);
                     await _mediator.SendCommandAsync(command, cancellationToken);
 
                     TempData.Put(Constants.ResponseTempKey,
@@ -135,12 +135,12 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> GetPagedCustomers([FromBody] CustomerListModel model,
+        public async Task<JsonResult> GetPagedUsers([FromBody] CustomerListModel model,
             CancellationToken cancellationToken)
         {
             try
             {
-                var query = _mapper.Map<GetAllCustomersByPagingQuery>(model);
+                var query = _mapper.Map<GetAllUsersByPagingQuery>(model);
                 query.SearchText = model.Search.Value;
                 query.SortText = model.FormatSortExpression("FirstName", "LastName", "Email", "PhoneNumber");
 
@@ -176,7 +176,7 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
         {
             try
             {
-                var command = _mapper.Map<CustomerDeleteCommand>(new { Id = id });
+                var command = _mapper.Map<UserDeleteCommand>(new { Id = id });
                 await _mediator.SendCommandAsync(command, cancellationToken);
 
                 TempData.Put(Constants.ResponseTempKey,

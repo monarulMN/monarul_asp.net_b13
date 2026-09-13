@@ -1,20 +1,20 @@
-﻿using MaleFashion.Domain.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using MaleFashion.Domain.Contracts;
+//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace MaleFashion.Domain.Entities
-{
-    public class WishList : IAggregateRoot<Guid>
-    {
-        public Guid Id { get; set; }
+//namespace MaleFashion.Domain.Entities
+//{
+//    public class WishList : IAggregateRoot<Guid>
+//    {
+//        public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
-        public CustomerDto User { get; set; }
+//        public Guid UserId { get; set; }
+//        public UserDto User { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+//        public DateTime CreatedDate { get; set; }
 
-        public ICollection<WishListItem> WishlistItems { get; set; }
-            = new List<WishListItem>();
-    }
-}
+//        public ICollection<WishListItem> WishlistItems { get; set; }
+//            = new List<WishListItem>();
+//    }
+//}

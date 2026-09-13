@@ -55,6 +55,8 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
             }).ToList();
 
             return View(model);
+
+
         }
 
 

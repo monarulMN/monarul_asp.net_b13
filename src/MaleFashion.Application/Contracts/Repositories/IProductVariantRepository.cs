@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MaleFashion.Application.Contracts.Repositories
 {
-    public interface IProductSizeRepository : IRepository<ProductSize, Guid>
+    public interface IProductVariantRepository : IRepository<ProductVariant, Guid>
     {
     }
 }
