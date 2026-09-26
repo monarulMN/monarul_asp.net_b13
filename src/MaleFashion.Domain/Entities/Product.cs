@@ -14,8 +14,8 @@ namespace MaleFashion.Domain.Entities
         public double? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
         public string? SKU { get; set; }
-        public string MainImageUrl { get; set; } = null!;
-        public bool IsFeatured { get; set; }
+        public string Color { get; set; }
+        public string Size { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
 
@@ -24,9 +24,6 @@ namespace MaleFashion.Domain.Entities
 
         public ICollection<ProductImage> ProductImages { get; set; }
             = new List<ProductImage>();
-
-        public ICollection<ProductVariant> ProductVariants { get; set; }
-            = new List<ProductVariant>();
 
         //public ICollection<CartItem> CartItems { get; set; }
         //    = new List<CartItem>();

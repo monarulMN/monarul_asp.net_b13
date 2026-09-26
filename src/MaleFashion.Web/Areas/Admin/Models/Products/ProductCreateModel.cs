@@ -9,6 +9,10 @@ namespace MaleFashion.Web.Areas.Admin.Models.Products
         public Guid Id { get; set; }
 
         [Required]
+        public Guid CategoryId { get; set; }
+        public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
+
+        [Required]
         [StringLength(100)]
         public string Name { get; set; }
         
@@ -33,8 +37,17 @@ namespace MaleFashion.Web.Areas.Admin.Models.Products
         public string? SKU { get; set; }
 
         [Required]
-        public Guid CategoryId { get; set; }
-        public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
+        [StringLength (50)]
+        public string? Color { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string? Size { get; set; }
+
+        public IFormFile? Image { get; set; }
+        public string? ImageName  { get; set; }
+
+        
         
     }
 }

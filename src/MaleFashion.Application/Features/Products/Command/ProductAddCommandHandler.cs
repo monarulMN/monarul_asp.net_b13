@@ -28,10 +28,23 @@ namespace MaleFashion.Application.Features.Products.Command
             if (!isDuplicateName)
             {
                 var product = _mapper.Map<Product>(command);
-                product.Id = IdentityGenerator.NewSequentialGuid();
-                
+                product.Id = IdentityGenerator.NewSequentialGuid();                
 
                 await _unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
+
+                if (!string.IsNullOrEmpty(command.ImageName))
+                {
+                    var productImage = new ProductImage
+                    {
+                        Id = IdentityGenerator.NewSequentialGuid(),
+                        ProductId = product.Id,
+                        ImageName = command.ImageName,
+                        DisplayOrder = 1
+                    };
+
+                    await _unitOfWork.ProductImageRepository.AddAsync(productImage, cancellationToken);
+                }
+
                 await _unitOfWork.SaveAsync(cancellationToken);
 
                 return product;

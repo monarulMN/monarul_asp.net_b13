@@ -19,7 +19,7 @@ namespace MaleFashion.Infrastructure.Data.Repositories
         {
             return await GetDynamicAsync(x => query.SearchText == null || x.Name.Contains(query.SearchText),
                 query.SortText,
-                x => x.Include(x => x.Category),
+                null,
                 query.PageIndex,
                 query.PageSize,
                 true,
