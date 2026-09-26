@@ -74,7 +74,7 @@ namespace MaleFashion.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Member");
+                    //await _userManager.AddToRoleAsync(user, "Member");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

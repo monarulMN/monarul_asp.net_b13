@@ -1,7 +1,9 @@
 ﻿using Cortex.Mediator;
 using MaleFashion.Application.Contracts;
+using MaleFashion.Application.Contracts.Services;
 using MaleFashion.Application.Exceptions;
 using MaleFashion.Application.Features.Categories.Command;
+using MaleFashion.Application.Features.Categories.Query;
 using MaleFashion.Application.Features.Products.Command;
 using MaleFashion.Application.Features.Products.Query;
 using MaleFashion.Domain.Entities;
@@ -22,19 +24,19 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly ILogger<ProductsController> _logger;
-        private readonly IApplicationUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly IFileStorageService _fileStorageService;
 
         public ProductsController(ILogger<ProductsController> logger, 
-            IApplicationUnitOfWork unitOfWork,
             IMapper mapper, 
-            IMediator mediator)
+            IMediator mediator,
+            IFileStorageService fileStorageService)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediator = mediator;
+            _fileStorageService = fileStorageService;
         }
 
         public IActionResult Index()
@@ -45,17 +47,19 @@ namespace MaleFashion.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
-            var model = new ProductCreateModel();
+            var categories = await _mediator.SendQueryAsync<GetCategoryByIdQuery, Category?>(new GetCategoryByIdQuery(),cancellationToken);
 
-            var categories =  await _unitOfWork.CategoryRepository.GetAllAsync(cancellationToken);
-            model.Categories = categories.Select(c => new SelectListItem
+            var model = new ProductCreateModel
             {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
+                //Categories = categories.Select(c => new SelectListItem
+                //    {
+                //        Text = c.Name,
+                //        Value = c.Id.ToString()
 
+                //    }).ToList()
+            };
+            
             return View(model);
-
 
         }
 

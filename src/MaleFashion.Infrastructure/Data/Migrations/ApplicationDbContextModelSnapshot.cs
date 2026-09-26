@@ -150,6 +150,22 @@ namespace MaleFashion.Infrastructure.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            ConcurrencyStamp = "20C74340-B876-412C-81D3-A323469C54B1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            ConcurrencyStamp = "0C683DB0-F13D-45D3-B151-FCFD879C1381",
+                            Name = "Member",
+                            NormalizedName = "MEMBER"
+                        });
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRoleClaim", b =>
