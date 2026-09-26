@@ -33,7 +33,6 @@ namespace MaleFashion.Infrastructure.Extensions
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddSingleton<IFileStorageService, FileStorageService>(x => new FileStorageService(rootPath));
-            //services.AddSingleton<ISqlUtility, SqlUtility>();
             services.AddSingleton<IServerTime, ServerTime>();
 
 

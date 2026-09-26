@@ -12,6 +12,7 @@ namespace MaleFashion.Infrastructure.Data
         public ICategoryRepository CategoryRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
         public IProductImageRepository ProductImageRepository { get; private set; }
+        public ISqlUtility SqlUtility { get; private set; }
 
 
         //public ICartRepository CartRepository { get; private set; }
@@ -28,7 +29,7 @@ namespace MaleFashion.Infrastructure.Data
             ICategoryRepository categoryRepository,
             IProductRepository productRepository,
             IProductImageRepository productImageRepository
-            
+
             //ICartRepository cartRepository,
             //ICartItemRepository cartItemRepository,
             //IOrderRepository orderRepository,
@@ -42,7 +43,8 @@ namespace MaleFashion.Infrastructure.Data
             CategoryRepository = categoryRepository;
             ProductRepository = productRepository;
             ProductImageRepository = productImageRepository;
-            
+            SqlUtility = new SqlUtility(dbContext.Database.GetDbConnection());
+
             //CartRepository = cartRepository;
             //CartItemRepository = cartItemRepository;
             //OrderRepository = orderRepository;
