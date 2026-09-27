@@ -11,7 +11,6 @@ namespace MaleFashion.Application.Contracts
         public ICategoryRepository CategoryRepository { get; }
         public IProductRepository ProductRepository { get; }
         public IProductImageRepository ProductImageRepository { get; }
-
         public ISqlUtility SqlUtility { get; }
 
         //public ICartRepository CartRepository { get; }
