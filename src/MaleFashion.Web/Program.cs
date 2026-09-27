@@ -62,6 +62,10 @@ try
 
     #endregion
 
+    #region Docker IP Connection
+    builder.WebHost.UseUrls("http://*:80");
+    #endregion
+
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     #region Identity Configuration

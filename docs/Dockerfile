@@ -6,4 +6,4 @@ RUN apt install apache2 -y
 
 EXPOSE 80
 
-CMD apachectl -D FOREGROUND
+#CMD apachectl -D FOREGROUND
