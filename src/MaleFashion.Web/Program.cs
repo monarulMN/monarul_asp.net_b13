@@ -106,7 +106,7 @@ try
 
     app.MapControllerRoute(
         name: "area",
-        pattern: "{area:exists}/{controller=Dashbord}/{action=Index}/{id?}")
+        pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}")
         .WithStaticAssets();
 
     app.MapControllerRoute(
