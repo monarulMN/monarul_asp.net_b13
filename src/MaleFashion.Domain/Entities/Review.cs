@@ -13,7 +13,7 @@
 //        public Product Product { get; set; }
 
 //        public Guid UserId { get; set; }
-//        public UserDto User { get; set; }
+//        public User User { get; set; }
 
 //        public int Rating { get; set; }
 //        public string Comment { get; set; }

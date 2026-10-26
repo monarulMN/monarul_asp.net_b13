@@ -1,7 +1,6 @@
 ﻿using Cortex.Mediator.Queries;
 using MaleFashion.Application.Contracts;
 using MaleFashion.Application.Contracts.Repositories;
-using MaleFashion.Application.DTOs;
 using MaleFashion.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Text;
 
 namespace MaleFashion.Application.Features.Users.Query
 {
-    public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto?>
+    public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, User?>
     {
         private readonly IUserRepository _userRepository;
 
@@ -18,7 +17,7 @@ namespace MaleFashion.Application.Features.Users.Query
             _userRepository = userRepository;
         }
 
-        public async Task<UserDto?> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
+        public async Task<User?> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
         {
             return await _userRepository.GetByIdAsync(query.Id, cancellationToken);
         }

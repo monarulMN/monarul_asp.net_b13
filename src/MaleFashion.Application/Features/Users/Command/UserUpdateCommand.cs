@@ -1,5 +1,4 @@
 ﻿using Cortex.Mediator.Commands;
-using MaleFashion.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;

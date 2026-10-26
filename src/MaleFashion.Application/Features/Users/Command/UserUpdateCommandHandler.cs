@@ -1,7 +1,6 @@
 ﻿using Cortex.Mediator.Commands;
 using MaleFashion.Application.Contracts.Repositories;
 using MaleFashion.Application.Exceptions;
-using MaleFashion.Application.DTOs;
 using Mapster;
 using MapsterMapper;
 using System;

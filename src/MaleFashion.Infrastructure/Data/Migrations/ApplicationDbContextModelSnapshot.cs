@@ -48,7 +48,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.Product", b =>
@@ -98,7 +98,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Domain.Entities.ProductImage", b =>
@@ -121,7 +121,7 @@ namespace MaleFashion.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("MaleFashion.Infrastructure.Identity.ApplicationRole", b =>

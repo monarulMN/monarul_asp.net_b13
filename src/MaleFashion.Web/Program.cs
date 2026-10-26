@@ -56,14 +56,14 @@ try
 
     #endregion
 
-    #region DbContext Configuration]
+    #region DbContext Configuration
 
     builder.Services.AddDbContext(connectionString, migrationAssembly);
 
     #endregion
 
     #region Docker IP Connection
-    builder.WebHost.UseUrls("http://*:80");
+    //builder.WebHost.UseUrls("http://*:80");
     #endregion
 
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();

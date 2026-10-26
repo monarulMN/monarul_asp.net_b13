@@ -1,7 +1,6 @@
 ﻿using MaleFashion.Application.Contracts.Repositories;
 using MaleFashion.Application.Features.Categories.Query;
 using MaleFashion.Application.Features.Users.Query;
-using MaleFashion.Application.DTOs;
 using MaleFashion.Domain.Entities;
 using MaleFashion.Infrastructure.Identity;
 using System;
@@ -12,48 +11,48 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MapsterMapper;
+using MaleFashion.Application.Contracts;
 
 namespace MaleFashion.Infrastructure.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ApplicationUserManager _userManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly IServerTime _serverTime;
 
-        public UserRepository(ApplicationUserManager userManager, 
-            ApplicationDbContext dbContext,
-            IMapper mapper) 
+        public UserRepository(ApplicationDbContext dbContext,
+            IMapper mapper,
+            IServerTime serverTime) 
         {
-            _userManager = userManager;
             _dbContext = dbContext;
             _mapper = mapper;
+            _serverTime = serverTime;
         }
 
 
-        public async Task<UserDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
             if (user == null)
                 return null;
 
-            return _mapper.Map<UserDto>(user);
+            return _mapper.Map<User>(user);
         }
 
 
-        public async Task<(IList<UserDto>, int, int)> GetPagedUsers(GetAllUsersByPagingQuery query,
+        public async Task<(IList<User>, int, int)> GetPagedUsersAsync(GetAllUsersByPagingQuery query,
             CancellationToken cancellationToken)
         {
-            var user = _userManager.Users.AsQueryable();
 
-            if(!string.IsNullOrEmpty(query.SearchText))
+            var user = _dbContext.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.SearchText))
             {
-                user = user.Where(x => 
-                        (x.FirstName != null && x.FirstName.Contains(query.SearchText)) || 
-                        (x.LastName != null && x.LastName.Contains(query.SearchText)) || 
-                        (x.Email != null && x.Email.Contains(query.SearchText)) || 
-                        (x.PhoneNumber != null && x.PhoneNumber.Contains(query.SearchText))
+                user = user.Where(x =>
+                        (x.UserName != null && x.UserName.Contains(query.SearchText)) ||
+                        (x.Email != null && x.Email.Contains(query.SearchText)) 
                     );
             }
 
@@ -61,9 +60,9 @@ namespace MaleFashion.Infrastructure.Data.Repositories
 
             var users = await user
                 .Take(query.PageSize)
-                .Select(u => _mapper.Map<UserDto>(u))
+                .Select(u => _mapper.Map<User>(u))
                 .ToListAsync(cancellationToken);
-                        
+
 
             return (users, totalCount, query.PageSize);
         }
@@ -72,21 +71,21 @@ namespace MaleFashion.Infrastructure.Data.Repositories
         {
             if(!id.Equals(Guid.Empty))
             {
-                return await _userManager.Users.AnyAsync(x => x.Email == email && x.Id != id, cancellationToken);
+                return await _dbContext.Users.AnyAsync(x => x.Email == email && x.Id != id, cancellationToken);
             }
             else
             {
-                return await _userManager.Users.AnyAsync(x => x.Email == email, cancellationToken);
+                return await _dbContext.Users.AnyAsync(x => x.Email == email, cancellationToken);
             }
         }
 
 
         public async Task RemoveAsync(Guid id, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await _dbContext.FindByIdAsync(id.ToString());
             if (user != null)
             {
-                await _userManager.DeleteAsync(user);
+                await _dbContext.DeleteAsync(user);
             }
         }
 
@@ -97,9 +96,9 @@ namespace MaleFashion.Infrastructure.Data.Repositories
         }
 
 
-        public async Task UpdateAsync(UserDto user, CancellationToken cancellationToken)
+        public async Task UpdateAsync(User user, CancellationToken cancellationToken)
         {
-            var users = await _userManager.FindByIdAsync(user.Id.ToString());
+            var users = await _dbContext.FindByIdAsync(user.Id.ToString());
 
             if (users == null)
             {
